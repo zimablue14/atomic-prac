@@ -1,0 +1,13 @@
+/* 글로벌 테마 적용 */
+* {
+}
+
+/* Font 설정 */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-Regular.woff2') format('woff2');
+}
+
+html,
+body {
+}
