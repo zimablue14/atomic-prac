@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import type { ElementType } from '../../types';
-import UserFormTemplate from '../template/UserFormTemplate';
+import UserFormTemplate from '../components/template/UserFormTemplate';
+import type { ElementType } from '../types';
 
 const formElements: ElementType[] = [
   {

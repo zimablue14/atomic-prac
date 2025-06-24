@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import UserFormPage from './components/page/UserformPage';
+import UserFormPage from './page/UserformPage';
 
 const router = createBrowserRouter([
   {
