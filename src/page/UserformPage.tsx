@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import UserFormTemplate from '../components/template/UserFormTemplate';
 import type { ElementType } from '../types';
 
@@ -29,7 +27,7 @@ const formElements: ElementType[] = [
 ];
 
 export default function UserFormPage() {
-  const [elements] = useState(formElements); // 추후 동적 처리 가능
+  const elements = formElements;
 
   return <UserFormTemplate elements={elements} />;
 }
