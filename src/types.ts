@@ -1,6 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export type ElementType = {
-  tagName: string;
-  attr: any;
+  tagName: 'Input' | 'Checkbox' | 'Group';
+  attr: {
+    label: string;
+    placeholder?: string;
+  };
   children?: ElementType[];
+};
+
+export type SectionType = {
+  id: string;
+  title: string;
+  elements: ElementType[];
 };
