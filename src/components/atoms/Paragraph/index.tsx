@@ -1,15 +1,11 @@
-import styled from 'styled-components';
-
 type ParagraphProps = {
   reverse?: boolean;
-};
+} & React.HTMLAttributes<HTMLParagraphElement>;
 
-const Paragraph = styled.p<ParagraphProps>`
-  font-family: theme('fontFamily.sans');
-  color: theme('colors.gray.900');
-  font-size: 1rem;
-  line-height: 1.3;
-  margin: 1rem 0 0;
-`;
+const Paragraph = ({ className = '', ...props }: ParagraphProps) => {
+  return (
+    <p className={`mt-4 font-sans text-base leading-[1.3] text-gray-900 ${className}`} {...props} />
+  );
+};
 
 export default Paragraph;

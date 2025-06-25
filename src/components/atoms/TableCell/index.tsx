@@ -1,25 +1,28 @@
+import clsx from 'clsx';
 import type { HTMLAttributes, ReactNode } from 'react';
-import styled, { css } from 'styled-components';
-
-const cellStyles = css`
-  text-align: left;
-  padding: 0.75em;
-`;
-
-const Th = styled.th`
-  ${cellStyles}
-`;
-const Td = styled.td`
-  ${cellStyles}
-`;
 
 type TableCellProps = {
   heading?: boolean;
   children: ReactNode;
+  className?: string;
 } & HTMLAttributes<HTMLTableCellElement>;
 
-const TableCell = ({ heading = false, children, ...props }: TableCellProps) => {
-  return heading ? <Th {...props}>{children}</Th> : <Td {...props}>{children}</Td>;
+const TableCell = ({ heading = false, children, className, ...props }: TableCellProps) => {
+  const commonClasses = clsx('text-left p-3', className);
+
+  if (heading) {
+    return (
+      <th className={commonClasses} {...props}>
+        {children}
+      </th>
+    );
+  }
+
+  return (
+    <td className={commonClasses} {...props}>
+      {children}
+    </td>
+  );
 };
 
 export default TableCell;

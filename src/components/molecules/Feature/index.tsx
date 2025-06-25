@@ -1,5 +1,5 @@
+import clsx from 'clsx';
 import React from 'react';
-import styled from 'styled-components';
 
 import Badge from '../../atoms/Badge';
 import Heading from '../../atoms/Heading';
@@ -17,53 +17,39 @@ type FeatureProps = {
   children?: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Wrapper = styled.div<{ $soon?: boolean }>`
-  position: relative;
-  display: flex;
-  padding: 1rem;
-  box-sizing: border-box;
-  opacity: ${({ $soon }) => ($soon ? 0.4 : 1)};
-  @media screen and (max-width: 640px) {
-    padding: 0.5rem;
-  }
-`;
-
-const StyledIcon = styled(Icon)`
-  flex: none;
-  @media screen and (max-width: 640px) {
-    width: 32px;
-  }
-`;
-
-const Text = styled.div`
-  margin-left: 1rem;
-  overflow: auto;
-  > :first-child {
-    margin: 0;
-  }
-`;
-
-const StyledBadge = styled(Badge)`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  @media screen and (max-width: 640px) {
-    top: 0.5rem;
-    right: 0.5rem;
-  }
-`;
-
-const Feature: React.FC<FeatureProps> = ({ icon, title, link, code, children, soon, ...props }) => {
+const Feature: React.FC<FeatureProps> = ({
+  icon,
+  title,
+  link,
+  code,
+  children,
+  soon,
+  className = '',
+  ...props
+}) => {
   return (
-    <Wrapper $soon={soon} {...props}>
-      {icon && <StyledIcon icon={icon} width={64} />}
-      <Text>
+    <div
+      className={clsx(
+        'relative box-border flex p-4 transition-opacity sm:p-2',
+        soon && 'opacity-40',
+        className,
+      )}
+      {...props}
+    >
+      {icon && <Icon icon={icon} width={64} className="flex-none sm:w-8" />}
+
+      <div className="ml-4 overflow-auto">
         <Heading level={2}>{link ? <Link href={link}>{title}</Link> : title}</Heading>
         <Paragraph>{children}</Paragraph>
         {code && <PreformattedText block>{code}</PreformattedText>}
-      </Text>
-      {soon && <StyledBadge palette="grayscale">soon</StyledBadge>}
-    </Wrapper>
+      </div>
+
+      {soon && (
+        <Badge palette="grayscale" className="absolute top-4 right-4 sm:top-2 sm:right-2">
+          soon
+        </Badge>
+      )}
+    </div>
   );
 };
 

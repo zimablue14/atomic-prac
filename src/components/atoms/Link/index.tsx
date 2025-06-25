@@ -1,10 +1,8 @@
+import clsx from 'clsx';
 import React from 'react';
 import { NavLink, type NavLinkProps, type NavLinkRenderProps } from 'react-router-dom';
-import styled, { css } from 'styled-components';
 
-import type theme from '../../../styles/defaultTheme';
-
-type PaletteKey = keyof typeof theme.palette;
+type PaletteKey = 'primary' | 'secondary' | 'grayscale' | 'danger' | string;
 
 interface CommonProps {
   reverse?: boolean;
@@ -25,34 +23,40 @@ type InternalLinkProps = Omit<NavLinkProps, 'className' | 'children'> &
 
 type LinkProps = InternalLinkProps | AnchorProps;
 
-const linkStyles = css<CommonProps>`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  text-decoration: none;
-  font-weight: 500;
-  color: ${({ theme, palette = 'primary', reverse }) =>
-    reverse
-      ? theme.palette[palette][theme.palette[palette].length - 1]
-      : theme.palette[palette][1]};
+const baseClass = 'font-primary font-medium no-underline hover:underline';
 
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+const paletteClass = (palette: PaletteKey = 'primary', reverse?: boolean) => {
+  const colorKey = reverse ? 'last' : 'default';
+  const classMap: Record<PaletteKey, Record<'default' | 'last', string>> = {
+    primary: {
+      default: 'text-primary-500',
+      last: 'text-primary-900',
+    },
+    secondary: {
+      default: 'text-secondary-500',
+      last: 'text-secondary-900',
+    },
+    grayscale: {
+      default: 'text-grayscale-400',
+      last: 'text-grayscale-900',
+    },
+    danger: {
+      default: 'text-danger-500',
+      last: 'text-danger-900',
+    },
+  };
 
-const StyledAnchor = styled.a<CommonProps>`
-  ${linkStyles}
-`;
-
-const StyledSpan = styled.span<CommonProps>`
-  ${linkStyles}
-`;
+  return classMap[palette]?.[colorKey] ?? 'text-primary-500';
+};
 
 const isInternalLink = (props: LinkProps): props is InternalLinkProps => {
   return typeof props.to === 'string';
 };
 
 const Link: React.FC<LinkProps> = (props) => {
-  const { children, className, reverse, palette } = props;
+  const { children, className, reverse, palette = 'primary' } = props;
+
+  const composedClass = clsx(baseClass, paletteClass(palette, reverse), className);
 
   if (isInternalLink(props)) {
     const { to, ...navLinkProps } = props;
@@ -61,23 +65,19 @@ const Link: React.FC<LinkProps> = (props) => {
       <NavLink
         to={to}
         {...navLinkProps}
-        className={({ isActive }: NavLinkRenderProps) =>
-          [className, isActive ? 'active' : null].filter(Boolean).join(' ')
-        }
+        className={({ isActive }: NavLinkRenderProps) => clsx(composedClass, isActive && 'active')}
       >
-        <StyledSpan className={className} reverse={reverse} palette={palette}>
-          {children}
-        </StyledSpan>
+        {children}
       </NavLink>
     );
   }
 
-  const { to: _, ...anchorProps } = props;
+  const { ...anchorProps } = props;
 
   return (
-    <StyledAnchor {...anchorProps} reverse={reverse} palette={palette}>
+    <a {...anchorProps} className={composedClass}>
       {children}
-    </StyledAnchor>
+    </a>
   );
 };
 

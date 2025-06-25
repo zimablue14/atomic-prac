@@ -1,30 +1,36 @@
-import styled, { keyframes } from 'styled-components';
+import clsx from 'clsx';
+import React from 'react';
 
-import type theme from '../../../styles/defaultTheme';
-
-const spin = keyframes`
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-`;
-
-interface SpinnerProps {
-  palette?: keyof typeof theme.palette;
+interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
   reverse?: boolean;
+  palette?: 'primary' | 'grayscale';
 }
 
-const Spinner = styled.div<SpinnerProps>`
-  position: relative;
-  border: 0.2em solid
-    ${({ theme, reverse, palette = 'grayscale' }) =>
-      reverse
-        ? theme.palette[palette][1]
-        : theme.palette[palette][5] || theme.palette.grayscale[1]};
-  border-bottom-color: ${({ theme, palette = 'primary' }) => theme.palette[palette][1]};
-  border-radius: 50%;
-  margin: 0 auto;
-  width: 1em;
-  height: 1em;
-  animation: ${spin} 1s linear infinite;
-`;
+const Spinner: React.FC<SpinnerProps> = ({
+  reverse = false,
+  palette = 'grayscale',
+  className,
+  ...props
+}) => {
+  const outerBorder =
+    palette === 'primary'
+      ? reverse
+        ? 'border-primary-100'
+        : 'border-primary-500'
+      : reverse
+        ? 'border-gray-100'
+        : 'border-gray-500';
+
+  const bottomBorder = palette === 'primary' ? 'border-b-primary-100' : 'border-b-gray-100';
+
+  const classes = clsx(
+    'relative w-4 h-4 border-[0.2em] border-solid rounded-full animate-spin',
+    outerBorder,
+    bottomBorder,
+    className,
+  );
+
+  return <div className={classes} {...props} />;
+};
 
 export default Spinner;

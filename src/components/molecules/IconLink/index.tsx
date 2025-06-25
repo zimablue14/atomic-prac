@@ -1,77 +1,49 @@
+import clsx from 'clsx';
 import React from 'react';
-import styled from 'styled-components';
 
-import Icon from '../../atoms/Icon';
+import Icon, { type Palette } from '../../atoms/Icon';
 import Link from '../../atoms/Link';
-
-type StyledIconProps = {
-  height?: number;
-  hasText?: boolean;
-  right?: boolean;
-  responsive?: boolean;
-};
-
-type TextProps = {
-  responsive?: boolean;
-};
 
 type IconLinkProps = {
   icon: string;
   height?: number;
-  palette?: string;
+  palette?: Palette;
   reverse?: boolean;
   responsive?: boolean;
   right?: boolean;
   children?: React.ReactNode;
 } & React.ComponentProps<typeof Link>;
 
-const fontSize = ({ height }: StyledIconProps): string =>
-  height ? `${height / 3 / 16}rem` : '0.75em';
-
-const margin = ({ hasText, right }: StyledIconProps): string =>
-  hasText ? (right ? '0 0 0 0.25em' : '0 0.25em 0 0') : '0';
-
-const StyledIcon = styled(Icon)<StyledIconProps>`
-  font-size: ${fontSize};
-  margin: ${margin};
-
-  @media screen and (max-width: 420px) {
-    margin: ${({ responsive }) => (responsive ? 0 : undefined)};
-  }
-`;
-
-const Text = styled.span<TextProps>`
-  @media screen and (max-width: 420px) {
-    display: ${({ responsive }) => (responsive ? 'none' : undefined)};
-  }
-`;
-
 const IconLink: React.FC<IconLinkProps> = ({
   height,
   icon,
-  right,
-  responsive,
+  right = false,
+  responsive = false,
   children,
   palette,
   reverse,
+  className,
   ...props
 }) => {
+  const hasText = !!children;
+
+  const iconSize = height ? height / 3 : 12; // px 단위
+  const iconMargin = hasText ? (right ? 'ml-1' : 'mr-1') : '';
+
   const iconElement = (
-    <StyledIcon
-      height={height}
+    <Icon
       icon={icon}
-      hasText={!!children}
-      right={right}
-      responsive={responsive}
+      height={iconSize}
       palette={palette}
       reverse={reverse}
+      className={clsx('inline-block align-middle', iconMargin, responsive && 'max-[420px]:m-0')}
     />
   );
 
   return (
-    <Link {...props}>
+    <Link {...props} className={clsx('inline-flex items-center', className)}>
       {!right && iconElement}
-      <Text responsive={responsive}>{children}</Text>
+      {hasText && <span className={clsx(responsive && 'max-[420px]:hidden')}>{children}</span>}
       {right && iconElement}
     </Link>
   );

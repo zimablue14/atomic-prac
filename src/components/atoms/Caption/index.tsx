@@ -1,16 +1,22 @@
-import styled from 'styled-components';
+import clsx from 'clsx';
+import type { ReactNode } from 'react';
 
 type CaptionProps = {
   reverse?: boolean;
+  children: ReactNode;
 };
 
-const Caption = styled.caption<CaptionProps>`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  color: ${({ theme }) => theme.palette.grayscale[1]};
-  font-weight: 500;
-  line-height: 2rem;
-  font-size: 0.875rem;
-  text-transform: uppercase;
-`;
+const Caption: React.FC<CaptionProps> = ({ children }) => {
+  const classes = clsx(
+    'font-primary',
+    'text-grayscale-100',
+    'font-medium',
+    'leading-8',
+    'text-sm',
+    'uppercase',
+  );
+
+  return <caption className={classes}>{children}</caption>;
+};
 
 export default Caption;

@@ -1,27 +1,38 @@
-import styled from 'styled-components';
+import clsx from 'clsx';
 
-import type theme from '../../../styles/defaultTheme';
-
-type PaletteKey = keyof typeof theme.palette;
+type Palette = 'primary' | 'secondary' | 'danger' | 'alert' | 'success' | 'white' | 'grayscale';
 
 type BadgeProps = {
-  palette?: PaletteKey;
+  palette?: Palette;
   reverse?: boolean;
+  children: React.ReactNode;
+  className?: string;
 };
 
-const Badge = styled.span<BadgeProps>`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  font-size: 0.75rem;
-  line-height: 1.5em;
-  padding: 0.1em 0.3em;
-  color: ${({ theme, reverse }) =>
-    reverse ? theme.palette.grayscale[7] : theme.palette.grayscale[0]};
-  background-color: ${({ theme, palette: p = 'primary' }) => theme.palette[p][0]};
-  border-radius: 0.16667em;
-`;
+const Badge = ({ palette = 'primary', reverse, children }: BadgeProps) => {
+  const bgColor = {
+    primary: 'bg-primary-100',
+    secondary: 'bg-secondary-100',
+    danger: 'bg-danger-100',
+    alert: 'bg-alert-100',
+    success: 'bg-success-100',
+    white: 'bg-white-100',
+    grayscale: 'bg-grayscale-100',
+  }[palette];
 
-Badge.defaultProps = {
-  palette: 'primary',
+  const textColor = reverse ? 'text-grayscale-800' : 'text-white';
+
+  return (
+    <span
+      className={clsx(
+        'font-primary rounded-[0.16667em] px-[0.3em] py-[0.1em] text-[0.75rem] leading-[1.5em]',
+        bgColor,
+        textColor,
+      )}
+    >
+      {children}
+    </span>
+  );
 };
 
 export default Badge;

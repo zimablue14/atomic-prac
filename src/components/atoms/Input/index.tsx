@@ -1,67 +1,79 @@
+import clsx from 'clsx';
 import React from 'react';
-import styled, { css } from 'styled-components';
 
-type InputType = 'text' | 'textarea' | 'select' | 'checkbox' | 'radio';
+export type InputType = 'text' | 'textarea' | 'select' | 'checkbox' | 'radio';
 
-type InputProps = {
+type CommonProps = {
   type?: InputType;
   reverse?: boolean;
-  height?: number;
+  fontHeight?: number;
   invalid?: boolean;
-} & React.InputHTMLAttributes<HTMLInputElement> &
-  React.TextareaHTMLAttributes<HTMLTextAreaElement> &
-  React.SelectHTMLAttributes<HTMLSelectElement>;
+  className?: string;
+};
 
-const fontSize = ({ height = 40 }: { height?: number }) => `${height / 35.5555555556}rem`;
+type InputTextProps = CommonProps &
+  React.InputHTMLAttributes<HTMLInputElement> & {
+    type?: 'text' | 'checkbox' | 'radio';
+  };
 
-const styles = css<InputProps>`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  display: block;
-  width: 100%;
-  margin: 0;
-  box-sizing: border-box;
-  font-size: ${fontSize};
-  padding: ${({ type }) => (type === 'textarea' ? '0.4444444444em' : '0 0.4444444444em')};
-  height: ${({ type }) => (type === 'textarea' ? 'auto' : '2.2222222222em')};
-  color: ${({ theme }) => theme.palette.grayscale[0]};
-  background-color: ${({ theme }) => theme.palette.grayscale[0]}10;
-  border: 1px solid
-    ${({ theme, invalid }) => (invalid ? theme.palette.danger[2] : theme.palette.grayscale[3])};
-  border-radius: 2px;
+type TextareaProps = CommonProps &
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    type: 'textarea';
+  };
 
-  &[type='checkbox'],
-  &[type='radio'] {
-    display: inline-block;
-    border: 0;
-    border-radius: 0;
-    width: auto;
-    height: auto;
-    margin: 0 0.2rem 0 0;
-  }
-`;
+type SelectProps = CommonProps &
+  React.SelectHTMLAttributes<HTMLSelectElement> & {
+    type: 'select';
+  };
 
-const StyledTextarea = styled.textarea<InputProps>`
-  ${styles}
-`;
-const StyledSelect = styled.select<InputProps>`
-  ${styles}
-`;
-const StyledInput = styled.input<InputProps>`
-  ${styles}
-`;
+type InputProps = InputTextProps | TextareaProps | SelectProps;
+
+const getFontSize = (fontHeight?: number): string => {
+  const px = fontHeight ?? 40;
+  const rem = px / 35.5555555556;
+  return `${rem}rem`;
+};
+
+const getCommonClass = (props: InputProps) => {
+  const { type, invalid } = props;
+
+  const base = [
+    'block w-full box-border m-0 rounded-sm font-primary',
+    'border',
+    invalid ? 'border-danger-400' : 'border-grayscale-300',
+    'bg-grayscale-100/10 text-grayscale-100',
+  ];
+
+  const padding = type === 'textarea' ? 'p-[0.4444em]' : 'px-[0.4444em]';
+  const heightClass = type === 'textarea' ? '' : 'h-[2.2222em]';
+
+  const fontSize = getFontSize(props.fontHeight);
+
+  return clsx(...base, padding, heightClass) + ` text-[${fontSize}]`;
+};
 
 const Input: React.FC<InputProps> = (props) => {
-  const { type = 'text' } = props;
+  const { type = 'text', className } = props;
+  const finalClass = clsx(getCommonClass(props), className);
 
-  if (type === 'textarea') {
-    return <StyledTextarea {...props} />;
+  switch (type) {
+    case 'textarea': {
+      const textareaProps = props as TextareaProps;
+      return <textarea {...textareaProps} className={finalClass} />;
+    }
+    case 'select': {
+      const selectProps = props as SelectProps;
+      return <select {...selectProps} className={finalClass} />;
+    }
+    default: {
+      const inputProps = props as InputTextProps;
+      const checkboxRadioClass =
+        type === 'checkbox' || type === 'radio'
+          ? 'inline-block w-auto h-auto m-0 mr-[0.2rem] border-0 rounded-none'
+          : '';
+      return <input {...inputProps} type={type} className={clsx(finalClass, checkboxRadioClass)} />;
+    }
   }
-
-  if (type === 'select') {
-    return <StyledSelect {...props} />;
-  }
-
-  return <StyledInput {...props} />;
 };
 
 export default Input;

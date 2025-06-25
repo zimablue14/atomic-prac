@@ -6,7 +6,7 @@ import PageTemplate from '../../templates/PageTemplate';
 
 const SamplePage = () => {
   return (
-    <PageTemplate header={<Header />} footer={<Footer />}>
+    <PageTemplate header={<Header children={undefined} />} footer={<Footer />}>
       <Heading>
         Irure mollit aute tempor incididunt eiusmod fugiat tempor aute ex sit aute est proident est.
       </Heading>

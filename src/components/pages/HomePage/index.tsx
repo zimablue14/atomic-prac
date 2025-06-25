@@ -6,7 +6,11 @@ import PageTemplate from '../../templates/PageTemplate';
 
 const HomePage = () => {
   return (
-    <PageTemplate header={<Header />} hero={<Hero />} footer={<Footer />}>
+    <PageTemplate
+      header={<Header children={undefined} />}
+      hero={<Hero children={undefined} />}
+      footer={<Footer />}
+    >
       <FeatureList />
     </PageTemplate>
   );

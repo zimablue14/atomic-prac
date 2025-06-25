@@ -1,37 +1,60 @@
+import clsx from 'clsx';
 import React from 'react';
-import styled, { css } from 'styled-components';
 
-import type theme from '../../../styles/defaultTheme';
+type PaletteKey = 'primary' | 'secondary' | 'grayscale' | 'danger' | string;
 
 type ListProps = {
   ordered?: boolean;
-  palette?: keyof typeof theme.palette;
+  palette?: PaletteKey;
   reverse?: boolean;
+  className?: string;
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLUListElement | HTMLOListElement>;
 
-const styles = css<ListProps>`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  margin: 1rem 0;
-  padding-left: 1.6rem;
-  line-height: 1.7rem;
-  color: ${({ theme, palette = 'grayscale', reverse }) =>
-    reverse
-      ? theme.palette[palette][theme.palette[palette].length - 1]
-      : theme.palette[palette][1]};
-`;
+const baseClass = 'font-primary pl-6 my-4 leading-7 list-inside';
 
-const Ol = styled.ol<ListProps>`
-  ${styles}
-`;
+const paletteClass = (palette: PaletteKey = 'grayscale', reverse?: boolean) => {
+  const colorKey = reverse ? 'last' : 'default';
+  const classMap: Record<PaletteKey, Record<'default' | 'last', string>> = {
+    primary: {
+      default: 'text-primary-500',
+      last: 'text-primary-900',
+    },
+    secondary: {
+      default: 'text-secondary-500',
+      last: 'text-secondary-900',
+    },
+    grayscale: {
+      default: 'text-grayscale-400',
+      last: 'text-grayscale-900',
+    },
+    danger: {
+      default: 'text-danger-500',
+      last: 'text-danger-900',
+    },
+  };
 
-const Ul = styled.ul<ListProps>`
-  ${styles}
-`;
+  return classMap[palette]?.[colorKey] ?? 'text-primary-500';
+};
 
-const List: React.FC<ListProps> = ({ ordered, children, ...props }) => {
-  const Component = ordered ? Ol : Ul;
-  return <Component {...props}>{children}</Component>;
+const List: React.FC<ListProps> = ({
+  ordered,
+  palette = 'grayscale',
+  reverse,
+  className,
+  children,
+  ...props
+}) => {
+  const composedClass = clsx(
+    baseClass,
+    paletteClass(palette, reverse),
+    ordered ? 'list-decimal' : 'list-disc',
+    className,
+  );
+
+  const Tag = ordered ? 'ol' : 'ul';
+
+  return React.createElement(Tag, { className: composedClass, ...props }, children);
 };
 
 export default List;

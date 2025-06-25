@@ -1,38 +1,21 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const StyledBlockquote = styled.blockquote`
-  position: relative;
-  font-family: ${({ theme }) => theme.fonts.quote};
-  font-style: italic;
-  font-size: 1.2rem;
-  line-height: 2rem;
-  box-sizing: border-box;
-  color: ${({ theme }) => theme.palette.grayscale[1]};
-  border-left: 5px solid ${({ theme }) => theme.palette.grayscale[2]};
-  margin: 1rem 0;
-  padding: 0.5rem 0 0.5rem 1.5rem;
-`;
-
-const Cite = styled.cite`
-  display: block;
-  font-family: ${({ theme }) => theme.fonts.primary};
-  font-weight: 300;
-  font-style: normal;
-  margin-top: 0.4rem;
-`;
 
 type BlockquoteProps = {
   cite?: string;
   children?: React.ReactNode;
 } & React.HTMLAttributes<HTMLElement>;
 
-const Blockquote: React.FC<BlockquoteProps> = ({ cite, children, ...props }) => {
+const Blockquote: React.FC<BlockquoteProps> = ({ cite, children, className = '', ...props }) => {
   return (
-    <StyledBlockquote {...props}>
-      <div>{children}</div>
-      {cite && <Cite>{cite}</Cite>}
-    </StyledBlockquote>
+    <blockquote
+      className={`relative my-4 border-l-4 border-gray-300 pl-6 text-[1.2rem] leading-8 text-gray-600 italic ${className}`}
+      {...props}
+    >
+      {children}
+      {cite && (
+        <cite className="mt-2 block text-sm font-light text-gray-500 not-italic">{cite}</cite>
+      )}
+    </blockquote>
   );
 };
 

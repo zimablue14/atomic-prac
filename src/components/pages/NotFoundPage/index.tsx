@@ -5,7 +5,7 @@ import PageTemplate from '../../templates/PageTemplate';
 
 const NotFoundPage = () => {
   return (
-    <PageTemplate header={<Header />} footer={<Footer />}>
+    <PageTemplate header={<Header children={undefined} />} footer={<Footer />}>
       <Heading>404 Not Found</Heading>
     </PageTemplate>
   );

@@ -1,30 +1,17 @@
 import React from 'react';
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding-top: 3.75rem;
-  min-height: 100vh;
-  box-sizing: border-box;
-`;
-
-const Content = styled.section`
-  width: 100%;
-  box-sizing: border-box;
-  margin: 2rem auto;
-  max-width: 920px;
-`;
 
 type GenericTemplateProps = {
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const GenericTemplate: React.FC<GenericTemplateProps> = ({ children, ...props }) => {
+const GenericTemplate: React.FC<GenericTemplateProps> = ({ children, className, ...props }) => {
   return (
-    <Wrapper {...props}>
-      <Content>{children}</Content>
-    </Wrapper>
+    <div
+      className={`box-border flex min-h-screen flex-col pt-[3.75rem] ${className ?? ''}`}
+      {...props}
+    >
+      <section className="mx-auto my-8 box-border w-full max-w-[920px]">{children}</section>
+    </div>
   );
 };
 

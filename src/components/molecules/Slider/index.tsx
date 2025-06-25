@@ -1,121 +1,5 @@
+import clsx from 'clsx';
 import React from 'react';
-import styled from 'styled-components';
-
-const thumbHeight = '1.5em';
-const thumbWidth = '1.5em';
-const barHeight = '0.6em';
-const border = '0.0625em solid transparent';
-const borderRadius = '0.125em';
-
-const fontSize = ({ height = 36 }: { height?: number }) => `${height / 35.5555555556}rem`;
-
-const Wrapper = styled.div<{ height?: number }>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  font-family: ${({ theme }) => theme.fonts.primary};
-  font-size: ${fontSize};
-  color: ${({ theme }) => theme.palette.grayscale[0]};
-  background-color: transparent;
-`;
-
-const Range = styled.input<{ disabled?: boolean }>`
-  appearance: none;
-  -webkit-appearance: none;
-  margin: 0 0.4375em;
-  width: 100%;
-  height: 1rem;
-  background: transparent;
-
-  &:focus {
-    outline: none;
-  }
-
-  /* Thumb */
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    background: ${({ theme, disabled }) => theme.palette.primary[disabled ? 2 : 1]};
-    border: ${border};
-    height: ${thumbHeight};
-    width: ${thumbWidth};
-    border-radius: ${borderRadius};
-    cursor: pointer;
-    margin-top: -0.53em;
-    transition: background 0.15s ease-in-out;
-
-    &:hover {
-      background: ${({ theme, disabled }) => (disabled ? undefined : theme.palette.primary[0])};
-    }
-  }
-
-  &::-moz-range-thumb {
-    background: ${({ theme, disabled }) => theme.palette.primary[disabled ? 2 : 1]};
-    height: ${thumbHeight};
-    width: ${thumbWidth};
-    border: ${border};
-    border-radius: ${borderRadius};
-    cursor: pointer;
-    transition: background 0.15s ease-in-out;
-
-    &:hover {
-      background: ${({ theme, disabled }) => (disabled ? undefined : theme.palette.primary[0])};
-    }
-  }
-
-  &::-ms-thumb {
-    height: ${thumbHeight};
-    width: ${thumbWidth};
-    cursor: pointer;
-    border: ${border};
-    border-radius: ${borderRadius};
-  }
-
-  /* Track */
-  &::-webkit-slider-runnable-track {
-    width: 100%;
-    height: ${barHeight};
-    background: ${({ theme }) => theme.palette.grayscale[2]};
-    border-radius: ${borderRadius};
-    border: ${border};
-  }
-
-  &::-ms-track {
-    width: 100%;
-    height: ${barHeight};
-    border: ${border};
-    border-radius: ${borderRadius};
-    color: transparent;
-  }
-
-  &::-moz-range-track {
-    width: 100%;
-    height: ${barHeight};
-    background: ${({ theme }) => theme.palette.grayscale[2]};
-    border-radius: ${borderRadius};
-    border: ${border};
-  }
-
-  &::-ms-fill-lower,
-  &::-ms-fill-upper {
-    background: ${({ theme }) => theme.palette.grayscale[2]};
-    border: ${border};
-    border-radius: ${borderRadius};
-  }
-`;
-
-const Text = styled.span<{ responsive?: boolean; breakpoint?: number }>`
-  padding: 0.4375em;
-  ${({ responsive, breakpoint }) =>
-    responsive &&
-    breakpoint &&
-    `
-    @media screen and (max-width: ${breakpoint}px) {
-      display: none !important;
-    }
-  `}
-`;
 
 interface SliderProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id?: string;
@@ -127,6 +11,7 @@ interface SliderProps extends React.InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   responsive?: boolean;
   breakpoint?: number;
+  height?: number;
 }
 
 const Slider: React.FC<SliderProps> = ({
@@ -137,15 +22,19 @@ const Slider: React.FC<SliderProps> = ({
   step = 1,
   responsive = false,
   breakpoint = 420,
-  height, // 분리
+  height = 36,
   ...props
 }) => {
+  const fontSize = `${height / 35.5555555556}rem`;
+  const textHideClass = responsive ? `max-[${breakpoint}px]:hidden` : '';
+
   return (
-    <Wrapper height={typeof height === 'number' ? height : undefined}>
-      <Text responsive={responsive} breakpoint={breakpoint}>
-        {min}
-      </Text>
-      <Range
+    <div
+      className="font-primary text-grayscale-0 flex h-full w-full items-center justify-center bg-transparent"
+      style={{ fontSize }}
+    >
+      <span className={clsx('px-[0.4375em]', textHideClass)}>{min}</span>
+      <input
         id={id}
         type="range"
         min={min}
@@ -153,12 +42,29 @@ const Slider: React.FC<SliderProps> = ({
         defaultValue={defaultValue}
         step={step}
         disabled={props.disabled}
+        className={clsx(
+          'mx-[0.4375em] h-4 w-full appearance-none bg-transparent focus:outline-none',
+          '[&::-webkit-slider-thumb]:appearance-none',
+          '[&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6',
+          '[&::-webkit-slider-thumb]:rounded [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-transparent',
+          '[&::-webkit-slider-thumb]:transition-colors [&::-webkit-slider-thumb]:duration-150',
+          props.disabled
+            ? '[&::-webkit-slider-thumb]:bg-primary-2'
+            : '[&::-webkit-slider-thumb]:bg-primary-1 [&::-webkit-slider-thumb]:hover:bg-primary-0',
+          '[&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6',
+          '[&::-moz-range-thumb]:rounded [&::-moz-range-thumb]:border [&::-moz-range-thumb]:border-transparent',
+          props.disabled
+            ? '[&::-moz-range-thumb]:bg-primary-2'
+            : '[&::-moz-range-thumb]:bg-primary-1 [&::-moz-range-thumb]:hover:bg-primary-0',
+          '[&::-ms-thumb]:h-6 [&::-ms-thumb]:w-6 [&::-ms-thumb]:rounded [&::-ms-thumb]:border [&::-ms-thumb]:border-transparent',
+          '[&::-webkit-slider-runnable-track]:bg-grayscale-2 [&::-webkit-slider-runnable-track]:h-[0.6em] [&::-webkit-slider-runnable-track]:rounded',
+          '[&::-moz-range-track]:bg-grayscale-2 [&::-moz-range-track]:h-[0.6em] [&::-moz-range-track]:rounded',
+          '[&::-ms-fill-lower]:bg-grayscale-2 [&::-ms-fill-upper]:bg-grayscale-2',
+        )}
         {...props}
       />
-      <Text responsive={responsive} breakpoint={breakpoint}>
-        {max}
-      </Text>
-    </Wrapper>
+      <span className={clsx('px-[0.4375em]', textHideClass)}>{max}</span>
+    </div>
   );
 };
 

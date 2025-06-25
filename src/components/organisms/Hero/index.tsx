@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import clsx from 'clsx';
 
 import Block from '../../atoms/Block';
 import Heading from '../../atoms/Heading';
@@ -9,77 +9,21 @@ import Tooltip from '../../atoms/Tooltip';
 import IconButton from '../../molecules/IconButton';
 import IconLink from '../../molecules/IconLink';
 
-const Wrapper = styled(Block)`
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  @media screen and (max-width: 640px) {
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-  }
-`;
+type HeroProps = React.ComponentProps<typeof Block>;
 
-const InnerWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  max-width: ${({ theme }) => theme.sizes.maxWidth};
-  @media screen and (max-width: 640px) {
-    flex-wrap: wrap;
-  }
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  box-sizing: border-box;
-  &:first-child {
-    flex: none;
-  }
-  @media screen and (max-width: 640px) {
-    padding: 0.25rem;
-    width: 100%;
-  }
-`;
-
-const Text = styled(Paragraph)`
-  color: ${({ theme }) => theme.palette.grayscale[3]};
-  font-weight: 300;
-  font-size: 1.35rem;
-  line-height: 1.35em;
-  width: 100%;
-  letter-spacing: 0.05em;
-  @media screen and (max-width: 640px) {
-    text-align: center;
-    font-size: 1rem;
-  }
-`;
-
-const ButtonGroup = styled.div`
-  margin-top: 2rem;
-  display: flex;
-  > :not(:first-child) {
-    margin-left: 0.5rem;
-  }
-`;
-
-const Instructions = styled.div`
-  width: 100%;
-  margin-top: 2rem;
-  @media screen and (max-width: 640px) {
-    margin-top: 1rem;
-  }
-`;
-
-const Hero = (props: React.ComponentProps<typeof Wrapper>) => {
+const Hero = ({ className, ...props }: HeroProps) => {
   return (
-    <Wrapper opaque reverse {...props}>
-      <InnerWrapper>
-        <Section>
+    <Block
+      opaque
+      reverse
+      className={clsx('box-border flex justify-center px-8 py-8 sm:px-1 sm:py-8', className)}
+      {...props}
+    >
+      <div className="flex w-full max-w-screen-xl flex-wrap sm:flex-wrap">
+        {/* Section 1 */}
+        <section className="box-border flex flex-col items-center px-8 py-8 sm:w-full sm:p-1">
           <LogoImage height={265} />
-          <ButtonGroup>
+          <div className="mt-8 flex gap-2">
             <Tooltip reverse data-title="Just a fancy tooltip 😄">
               <IconButton icon="github" href="https://github.com/diegohaz/arc">
                 GitHub
@@ -95,10 +39,12 @@ const Hero = (props: React.ComponentProps<typeof Wrapper>) => {
                 Docs
               </IconButton>
             </Tooltip>
-          </ButtonGroup>
-        </Section>
-        <Section>
-          <Text>
+          </div>
+        </section>
+
+        {/* Section 2 */}
+        <section className="box-border flex flex-col items-center px-8 py-8 sm:w-full sm:p-1">
+          <Paragraph className="text-grayscale-300 w-full text-[1.35rem] leading-[1.35em] font-light tracking-wide sm:text-center sm:text-base">
             <strong>ARc</strong> is a
             <IconLink reverse icon="react" href="https://facebook.github.io/react/">
               React
@@ -112,10 +58,11 @@ const Hero = (props: React.ComponentProps<typeof Wrapper>) => {
               Atomic Design
             </IconLink>{' '}
             methodology. It&apos;s
-            <strong>progressive</strong>, which means that you can start with the basic boilerplate
+            <strong> progressive</strong>, which means that you can start with the basic boilerplate
             and try the other features when you are comfortable.
-          </Text>
-          <Instructions>
+          </Paragraph>
+
+          <div className="mt-8 w-full sm:mt-4">
             <Heading level={2} reverse>
               Install
             </Heading>
@@ -125,10 +72,10 @@ const Hero = (props: React.ComponentProps<typeof Wrapper>) => {
             <IconLink icon="docs" right reverse href="https://github.com/diegohaz/arc/wiki/Setup">
               Learn more
             </IconLink>
-          </Instructions>
-        </Section>
-      </InnerWrapper>
-    </Wrapper>
+          </div>
+        </section>
+      </div>
+    </Block>
   );
 };
 

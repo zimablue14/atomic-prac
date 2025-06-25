@@ -1,14 +1,6 @@
-import { Caption } from 'components';
 import type { ReactNode } from 'react';
-import styled from 'styled-components';
 
-const StyledTable = styled.table`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  border-collapse: collapse;
-  width: 100%;
-  border: 1px solid ${({ theme }) => theme.palette.grayscale[1]};
-  color: ${({ theme }) => theme.palette.grayscale[0]};
-`;
+import Caption from '../../atoms/Caption';
 
 type TableProps = {
   caption?: string;
@@ -20,12 +12,15 @@ type TableProps = {
 
 const Table = ({ caption, head, foot, children, reverse, ...props }: TableProps) => {
   return (
-    <StyledTable {...props}>
+    <table
+      className="border-grayscale-1 text-grayscale-0 font-primary w-full border-collapse border"
+      {...props}
+    >
       {caption && <Caption reverse={reverse}>{caption}</Caption>}
       {head && <thead>{head}</thead>}
       {foot && <tfoot>{foot}</tfoot>}
       <tbody>{children}</tbody>
-    </StyledTable>
+    </table>
   );
 };
 

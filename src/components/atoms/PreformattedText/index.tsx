@@ -1,23 +1,29 @@
-import styled from 'styled-components';
+import clsx from 'clsx';
+import React from 'react';
 
 type PreProps = {
   block?: boolean;
   wrapped?: boolean;
   reverse?: boolean;
-  palette?: keyof typeof import('../../../styles/defaultTheme').default.palette;
-};
+  palette?: 'grayscale' | string; // 확장 가능
+} & React.HTMLAttributes<HTMLPreElement>;
 
-const PreformattedText = styled.pre<PreProps>`
-  display: ${({ block }) => (block ? 'block' : 'inline')};
-  font-family: ${({ theme }) => theme.fonts.pre};
-  color: ${({ theme, reverse }) =>
-    reverse ? theme.palette.grayscale[7] : theme.palette.grayscale[0]};
-  background-color: ${({ theme, reverse }) =>
-    reverse ? theme.palette.grayscale[0] : theme.palette.grayscale[1]};
-  padding: ${({ block }) => (block ? '1em' : '0 0.5em')};
-  white-space: ${({ wrapped }) => (wrapped ? 'pre-wrap' : 'nowrap')};
-  overflow: auto;
-  line-height: 1.5;
-`;
+const PreformattedText: React.FC<PreProps> = ({
+  block = false,
+  wrapped = false,
+  reverse = false,
+  className,
+  ...props
+}) => {
+  const classes = clsx(
+    block ? 'block p-4' : 'inline px-2',
+    wrapped ? 'whitespace-pre-wrap' : 'whitespace-nowrap',
+    'overflow-auto leading-[1.5] font-mono',
+    reverse ? 'bg-gray-50 text-gray-800' : 'bg-gray-800 text-white',
+    className,
+  );
+
+  return <pre className={classes} {...props} />;
+};
 
 export default PreformattedText;

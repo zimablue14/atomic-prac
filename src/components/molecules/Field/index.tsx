@@ -1,54 +1,73 @@
-import { Label, Input, Block } from 'components';
 import React from 'react';
-import styled from 'styled-components';
 
-type FieldProps = {
+import Input from '../../atoms/Input';
+import Label from '../../atoms/Label';
+
+type CommonFieldProps = {
   name: string;
-  invalid?: boolean;
-  error?: string;
   label?: string;
-  type?: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+  error?: string;
+  invalid?: boolean;
+};
 
-const Error = styled(Block)`
-  margin: 0.5rem 0 0;
-`;
-
-const Wrapper = styled.div`
-  margin-bottom: 1rem;
-
-  input[type='checkbox'],
-  input[type='radio'] {
-    margin-right: 0.5rem;
-  }
-
-  label {
-    vertical-align: middle;
-  }
-`;
-
-const Field: React.FC<FieldProps> = ({ error, name, invalid, label, type = 'text', ...props }) => {
-  const inputProps = {
-    id: name,
-    name,
-    type,
-    'aria-describedby': `${name}Error`,
-    ...props,
+type InputFieldProps = CommonFieldProps &
+  React.InputHTMLAttributes<HTMLInputElement> & {
+    type?: 'text' | 'checkbox' | 'radio';
   };
 
-  const renderInputFirst = type === 'checkbox' || type === 'radio';
+type TextareaFieldProps = CommonFieldProps &
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    type: 'textarea';
+  };
+
+type SelectFieldProps = CommonFieldProps &
+  React.SelectHTMLAttributes<HTMLSelectElement> & {
+    type: 'select';
+  };
+
+type FieldProps = InputFieldProps | TextareaFieldProps | SelectFieldProps;
+
+const Field: React.FC<FieldProps> = ({ error, name, invalid, label, type = 'text', ...props }) => {
+  const id = name;
+  const describedBy = `${name}Error`;
+
+  const isCheckboxOrRadio = type === 'checkbox' || type === 'radio';
+  const isInputType = type === 'text' || isCheckboxOrRadio;
 
   return (
-    <Wrapper>
-      {renderInputFirst && <Input {...inputProps} invalid={invalid} />}
-      {label && <Label htmlFor={inputProps.id}>{label}</Label>}
-      {!renderInputFirst && <Input {...inputProps} invalid={invalid} />}
+    <div className="mb-4">
+      <div className="flex items-center gap-2">
+        {isInputType && isCheckboxOrRadio && (
+          <Input
+            {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
+            id={id}
+            name={name}
+            type={type}
+            invalid={invalid}
+            aria-describedby={describedBy}
+          />
+        )}
+
+        {label && <Label htmlFor={id}>{label}</Label>}
+
+        {isInputType && !isCheckboxOrRadio && (
+          <Input
+            {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
+            id={id}
+            name={name}
+            type={type}
+            invalid={invalid}
+            aria-describedby={describedBy}
+          />
+        )}
+      </div>
+
       {invalid && error && (
-        <Error id={`${name}Error`} role="alert" palette="danger">
+        <p id={describedBy} role="alert" className="mt-2 text-sm text-red-500">
           {error}
-        </Error>
+        </p>
       )}
-    </Wrapper>
+    </div>
   );
 };
 

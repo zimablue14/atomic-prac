@@ -1,15 +1,21 @@
+import clsx from 'clsx';
 import React from 'react';
-import styled from 'styled-components';
 
 type LabelProps = {
   reverse?: boolean;
 } & React.LabelHTMLAttributes<HTMLLabelElement>;
 
-const Label = styled.label<LabelProps>`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  color: ${({ theme }) => theme.palette.grayscale[1]};
-  font-size: 1rem;
-  line-height: 2em;
-`;
+const Label: React.FC<LabelProps> = ({ reverse, className, children, ...rest }) => {
+  const colorClass = reverse ? 'text-grayscale-100' : 'text-grayscale-400';
+
+  return (
+    <label
+      {...rest}
+      className={clsx('font-primary text-base leading-[2em]', colorClass, className)}
+    >
+      {children}
+    </label>
+  );
+};
 
 export default Label;

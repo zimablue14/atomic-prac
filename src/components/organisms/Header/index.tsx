@@ -1,36 +1,24 @@
-import styled from 'styled-components';
+import clsx from 'clsx';
 
 import Block from '../../atoms/Block';
 import IconLink from '../../molecules/IconLink';
 import PrimaryNavigation from '../../molecules/PrimaryNavigation';
 
-const Wrapper = styled(Block)`
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-  @media screen and (max-width: 640px) {
-    padding: 0.5rem;
-  }
-`;
+type HeaderProps = React.ComponentProps<typeof Block>;
 
-const InnerWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  max-width: ${({ theme }) => theme.sizes.maxWidth};
-  > :not(:first-child) {
-    margin-left: 1rem;
-  }
-`;
-
-const Header = (props: React.ComponentProps<typeof Wrapper>) => {
+const Header = ({ className, ...props }: HeaderProps) => {
   return (
-    <Wrapper opaque reverse {...props}>
-      <InnerWrapper>
+    <Block
+      opaque
+      reverse
+      className={clsx('flex justify-center px-4 py-4 sm:py-2', className)}
+      {...props}
+    >
+      <div className="flex w-full max-w-screen-xl items-center gap-4">
         <IconLink to="/" icon="arc" height={100} />
         <PrimaryNavigation reverse />
-      </InnerWrapper>
-    </Wrapper>
+      </div>
+    </Block>
   );
 };
 

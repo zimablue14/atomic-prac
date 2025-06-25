@@ -1,17 +1,17 @@
-import styled from 'styled-components';
+import clsx from 'clsx';
 
 type AtomProps = {
-  palette?: string;
+  palette?: 'primary' | 'secondary' | 'grayscale';
   reverse?: boolean;
+  children: React.ReactNode;
 };
 
-const Atom = styled.span<AtomProps>`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  color: ${({ theme }) => theme.palette.grayscale[0]};
-`;
+export const Atom = ({ palette = 'grayscale', reverse, children }: AtomProps) => {
+  const textColor = {
+    grayscale: reverse ? 'text-white' : 'text-grayscale-800',
+    primary: reverse ? 'text-white' : 'text-primary-400',
+    secondary: reverse ? 'text-white' : 'text-secondary-400',
+  }[palette];
 
-Atom.defaultProps = {
-  palette: 'grayscale',
+  return <span className={clsx('font-primary', textColor)}>{children}</span>;
 };
-
-export default Atom;

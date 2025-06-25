@@ -1,18 +1,23 @@
+import clsx from 'clsx';
 import React, { type ReactNode } from 'react';
-import styled from 'styled-components';
-
-const Wrapper = styled.div`
-  font-family: ${({ theme }) => theme.fonts.primary};
-  color: ${({ theme }) => theme.palette.grayscale[0]};
-`;
 
 interface MoleculeProps extends React.HTMLAttributes<HTMLDivElement> {
   reverse?: boolean;
   children?: ReactNode;
 }
 
-const Molecule: React.FC<MoleculeProps> = ({ children, ...props }) => {
-  return <Wrapper {...props}>{children}</Wrapper>;
+const Molecule: React.FC<MoleculeProps> = ({ children, className, ...props }) => {
+  return (
+    <div
+      {...props}
+      className={clsx(
+        'text-grayscale-100 font-sans', // 필요에 따라 Tailwind config에서 font-family를 설정하세요.
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default Molecule;

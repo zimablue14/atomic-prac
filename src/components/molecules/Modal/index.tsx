@@ -1,130 +1,69 @@
-import { Heading, IconButton } from 'components';
-import type { ReactNode } from 'react';
+import clsx from 'clsx';
+import React from 'react';
 import ReactModal from 'react-modal';
-import styled, { css, createGlobalStyle } from 'styled-components';
 
-const GlobalStyle = createGlobalStyle`
-  body.ReactModal__Body--open {
-    overflow: hidden;
-  }
-`;
+import Heading from '../../atoms/Heading';
+import IconButton from '../IconButton';
 
-const overlayStyles = css`
-  position: fixed;
-  background-color: rgba(0, 0, 0, 0.5);
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 9999;
-  transition: opacity 250ms ease-in-out;
-  opacity: 0;
-  &[class*='after-open'] {
-    opacity: 1;
-  }
-  &[class*='before-close'] {
-    opacity: 0;
-  }
-`;
-
-const ModalBox = styled(ReactModal)<{ hasHeader: boolean }>`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  font-size: 1rem;
-  background-color: ${({ theme }) => theme.palette.grayscale[0]};
-  border-radius: 0.125em;
-  color: ${({ theme }) => theme.palette.grayscale[0]};
-  top: calc(50% - 1rem);
-  left: calc(50% - 1rem);
-  right: auto;
-  bottom: auto;
-  margin: 1rem calc(-50% + 1rem) 1rem 1rem;
-  transform: translate(-50%, 100%);
-  transition: transform 250ms ease-in-out;
-  outline: none;
-  box-sizing: border-box;
-  min-width: 320px;
-  max-width: calc(640px - 1rem);
-  max-height: calc(100% - 1rem);
-  padding-top: ${({ hasHeader }) => (hasHeader ? 0 : '1rem')};
-  @media screen and (max-width: 640px) {
-    width: calc(100% - 1rem);
-    min-width: 0;
-  }
-  &[class*='after-open'] {
-    transform: translate(-50%, -50%);
-  }
-  &[class*='before-close'] {
-    transform: translate(-50%, 100%);
-  }
-`;
-
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  > *:first-child {
-    flex: 1;
-  }
-`;
-
-const StyledHeading = styled(Heading)`
-  margin: 0 1rem 0 0;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-`;
-
-const Content = styled.div`
-  overflow: auto;
-  padding: 0 1rem;
-  margin-bottom: 1rem;
-`;
-
-const StyledReactModal = styled(({ className, ...props }: any) => (
-  <ModalBox overlayClassName={className} closeTimeoutMS={250} {...props} />
-))`
-  ${overlayStyles}
-`;
-
-interface ModalProps {
-  children?: ReactNode;
+type ModalProps = {
+  children?: React.ReactNode;
   title?: string;
   closeable?: boolean;
   reverse?: boolean;
   onClose: () => void;
-}
+  isOpen: boolean;
+};
 
 const Modal: React.FC<ModalProps> = ({
   children,
   title,
-  closeable,
-  reverse,
+  closeable = false,
+  reverse = false,
   onClose,
-  ...props
+  isOpen,
 }) => {
-  const hasHeader = !!title || !!closeable;
+  const hasHeader = title || closeable;
+
   return (
-    <>
-      <GlobalStyle />
-      <StyledReactModal
-        contentLabel={title || 'Modal'}
-        onRequestClose={onClose}
-        hasHeader={hasHeader}
-        {...props}
-      >
-        {hasHeader && (
-          <Header>
-            <StyledHeading level={2} reverse={reverse}>
+    <ReactModal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      closeTimeoutMS={250}
+      contentLabel={title || 'Modal'}
+      overlayClassName={clsx(
+        'fixed inset-0 z-[9999] bg-black/50 opacity-0 transition-opacity duration-300',
+        {
+          'ReactModal__Overlay--after-open': 'opacity-100',
+          'ReactModal__Overlay--before-close': 'opacity-0',
+        },
+      )}
+      className={clsx(
+        'absolute top-1/2 left-1/2 box-border flex transform flex-col rounded-sm bg-white text-base text-black outline-none',
+        'max-h-[calc(100%-1rem)] max-w-[calc(640px-1rem)] min-w-[320px]',
+        'translate-x-[-50%] translate-y-full transition-transform duration-300',
+        {
+          'ReactModal__Content--after-open': 'translate-y-[-50%]',
+          'ReactModal__Content--before-close': 'translate-y-full',
+        },
+        hasHeader ? 'pt-0' : 'pt-4',
+        'mx-[calc(-50%+1rem)] my-4 p-0',
+        'sm:w-[calc(100%-1rem)] sm:min-w-0',
+      )}
+    >
+      {hasHeader && (
+        <div className="flex items-center p-4">
+          <div className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
+            <Heading level={2} reverse={reverse}>
               {title}
-            </StyledHeading>
-            {closeable && <IconButton icon="close" onClick={onClose} palette="white" reverse />}
-          </Header>
-        )}
-        <Content>{children}</Content>
-      </StyledReactModal>
-    </>
+            </Heading>
+          </div>
+          {closeable && (
+            <IconButton icon="close" onClick={onClose} palette="white" reverse className="ml-2" />
+          )}
+        </div>
+      )}
+      <div className="flex-1 overflow-auto px-4 pb-4">{children}</div>
+    </ReactModal>
   );
 };
 

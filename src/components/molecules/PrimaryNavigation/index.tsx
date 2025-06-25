@@ -1,45 +1,32 @@
+import clsx from 'clsx';
 import React from 'react';
-import styled from 'styled-components';
 
 import Link from '../../atoms/Link';
-
-const Nav = styled.nav`
-  display: flex;
-  list-style: none;
-
-  > :not(:first-child) {
-    margin-left: 1rem;
-  }
-
-  a {
-    font-weight: 300;
-    color: ${({ theme }) => theme.palette.grayscale[2]};
-    font-size: 1.25rem;
-
-    &.active {
-      color: ${({ theme }) => theme.palette.grayscale[0]};
-    }
-  }
-`;
 
 type PrimaryNavigationProps = React.HTMLAttributes<HTMLElement> & {
   reverse?: boolean;
 };
 
-const PrimaryNavigation: React.FC<PrimaryNavigationProps> = (props) => {
+const PrimaryNavigation: React.FC<PrimaryNavigationProps> = ({ className, ...props }) => {
   return (
-    <Nav {...props}>
+    <nav className={clsx('flex list-none', className)} {...props}>
       <li>
-        <Link to="/" className="active">
+        <Link
+          to="/"
+          className="text-grayscale-300 [&.active]:text-grayscale-100 text-xl font-light"
+        >
           Home
         </Link>
       </li>
-      <li>
-        <Link to="/sample-page" className="active">
+      <li className="ml-4">
+        <Link
+          to="/sample-page"
+          className="text-grayscale-300 [&.active]:text-grayscale-100 text-xl font-light"
+        >
           Sample page
         </Link>
       </li>
-    </Nav>
+    </nav>
   );
 };
 
