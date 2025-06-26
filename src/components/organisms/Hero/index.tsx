@@ -75,18 +75,18 @@ const Instructions = styled.div`
 
 const Hero = (props: React.ComponentProps<typeof Wrapper>) => {
   return (
-    <Wrapper opaque reverse {...props}>
+    <Wrapper $opaque $$reverse {...props}>
       <InnerWrapper>
         <Section>
           <LogoImage height={265} />
           <ButtonGroup>
-            <Tooltip reverse data-title="Just a fancy tooltip 😄">
+            <Tooltip $reverse data-title="Just a fancy tooltip 😄">
               <IconButton icon="github" href="https://github.com/diegohaz/arc">
                 GitHub
               </IconButton>
             </Tooltip>
             <Tooltip
-              reverse
+              $reverse
               data-title="Another tooltip aligned differently"
               align="end"
               position="bottom"
@@ -100,12 +100,12 @@ const Hero = (props: React.ComponentProps<typeof Wrapper>) => {
         <Section>
           <Text>
             <strong>ARc</strong> is a
-            <IconLink reverse icon="react" href="https://facebook.github.io/react/">
+            <IconLink $reverse icon="react" href="https://facebook.github.io/react/">
               React
             </IconLink>{' '}
             starter kit based on the
             <IconLink
-              reverse
+              $reverse
               icon="atomic-design"
               href="http://bradfrost.com/blog/post/atomic-web-design/"
             >
@@ -116,13 +116,13 @@ const Hero = (props: React.ComponentProps<typeof Wrapper>) => {
             and try the other features when you are comfortable.
           </Text>
           <Instructions>
-            <Heading level={2} reverse>
+            <Heading level={2} $reverse>
               Install
             </Heading>
-            <PreformattedText block reverse wrapped>
+            <PreformattedText $block $reverse $wrapped>
               git clone -b master https://github.com/diegohaz/arc my-app
             </PreformattedText>
-            <IconLink icon="docs" right reverse href="https://github.com/diegohaz/arc/wiki/Setup">
+            <IconLink icon="docs" $right $reverse href="https://github.com/diegohaz/arc/wiki/Setup">
               Learn more
             </IconLink>
           </Instructions>

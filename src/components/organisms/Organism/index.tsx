@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 type OrganismProps = {
-  reverse?: boolean;
+  $reverse?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 const Organism: React.FC<OrganismProps> = (props) => {

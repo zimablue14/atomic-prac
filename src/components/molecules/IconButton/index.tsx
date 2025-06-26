@@ -11,7 +11,7 @@ const fadeIn = keyframes`
 `;
 
 type ExtraProps = {
-  hasText?: boolean;
+  $hasText?: boolean;
   collapsed?: boolean;
   responsive?: boolean;
   breakpoint?: number;
@@ -19,9 +19,9 @@ type ExtraProps = {
 };
 
 const StyledButton = styled(Button)<ExtraProps>`
-  max-width: ${({ hasText, collapsed }) => (hasText && !collapsed ? '100%' : '2.5em')};
-  width: ${({ hasText }) => (hasText ? 'auto' : '2.5em')};
-  padding: ${({ hasText }) => (hasText ? '0 0.4375em' : '0')};
+  max-width: ${({ $hasText, collapsed }) => ($hasText && !collapsed ? '100%' : '2.5em')};
+  width: ${({ $hasText }) => ($hasText ? 'auto' : '2.5em')};
+  padding: ${({ $hasText }) => ($hasText ? '0 0.4375em' : '0')};
   flex: 0 0 2.5em;
   box-sizing: border-box;
 
@@ -78,29 +78,30 @@ const StyledIcon = styled(Icon)`
 
 type IconButtonProps = {
   icon: string;
+  onClick?: () => void;
   responsive?: boolean;
   breakpoint?: number;
   collapsed?: boolean;
-  right?: boolean;
+  $right?: boolean;
   height?: number;
   children?: React.ReactNode;
 } & React.ComponentProps<typeof Button>;
 
 const IconButton = ({ icon, children, ...props }: IconButtonProps) => {
-  const { breakpoint, right, responsive, height } = props;
+  const { breakpoint, $right, responsive, height } = props;
 
   const iconElement = <StyledIcon height={height ? height / 2.5 : undefined} icon={icon} />;
 
   return (
-    <StyledButton hasText={!!children} {...props}>
+    <StyledButton $hasText={!!children} {...props}>
       <Wrapper>
-        {!right && iconElement}
+        {!$right && iconElement}
         {children && (
           <Text className="text" responsive={responsive} breakpoint={breakpoint}>
             {children}
           </Text>
         )}
-        {right && iconElement}
+        {$right && iconElement}
       </Wrapper>
     </StyledButton>
   );

@@ -1,6 +1,7 @@
-import { Caption } from 'components';
 import type { ReactNode } from 'react';
 import styled from 'styled-components';
+
+import Caption from '../../atoms/Caption';
 
 const StyledTable = styled.table`
   font-family: ${({ theme }) => theme.fonts.primary};
@@ -15,13 +16,13 @@ type TableProps = {
   head?: ReactNode;
   foot?: ReactNode;
   children: ReactNode;
-  reverse?: boolean;
+  $reverse?: boolean;
 } & React.TableHTMLAttributes<HTMLTableElement>;
 
-const Table = ({ caption, head, foot, children, reverse, ...props }: TableProps) => {
+const Table = ({ caption, head, foot, children, $reverse, ...props }: TableProps) => {
   return (
     <StyledTable {...props}>
-      {caption && <Caption reverse={reverse}>{caption}</Caption>}
+      {caption && <Caption $reverse={$reverse}>{caption}</Caption>}
       {head && <thead>{head}</thead>}
       {foot && <tfoot>{foot}</tfoot>}
       <tbody>{children}</tbody>

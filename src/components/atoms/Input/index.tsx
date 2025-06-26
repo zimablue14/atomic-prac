@@ -1,18 +1,31 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 
-type InputType = 'text' | 'textarea' | 'select' | 'checkbox' | 'radio';
-
-type InputProps = {
-  type?: InputType;
-  reverse?: boolean;
-  height?: number;
+type CommonProps = {
+  $reverse?: boolean;
+  customHeight?: number;
   invalid?: boolean;
-} & React.InputHTMLAttributes<HTMLInputElement> &
-  React.TextareaHTMLAttributes<HTMLTextAreaElement> &
-  React.SelectHTMLAttributes<HTMLSelectElement>;
+};
 
-const fontSize = ({ height = 40 }: { height?: number }) => `${height / 35.5555555556}rem`;
+type TextInputProps = CommonProps &
+  React.InputHTMLAttributes<HTMLInputElement> & {
+    type?: Exclude<string, 'textarea' | 'select'>;
+  };
+
+type TextareaProps = CommonProps &
+  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
+    type: 'textarea';
+  };
+
+type SelectProps = CommonProps &
+  React.SelectHTMLAttributes<HTMLSelectElement> & {
+    type: 'select';
+  };
+
+type InputProps = TextInputProps | TextareaProps | SelectProps;
+
+const fontSize = ({ customHeight = 40 }: { customHeight?: number }) =>
+  `${customHeight / 35.5555555556}rem`;
 
 const styles = css<InputProps>`
   font-family: ${({ theme }) => theme.fonts.primary};

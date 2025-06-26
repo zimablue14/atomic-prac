@@ -1,6 +1,6 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import Heading from '.'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import Heading from '.';
 
 storiesOf('Heading', module)
   .add('default', () => (
@@ -9,8 +9,8 @@ storiesOf('Heading', module)
   .add('palette', () => (
     <Heading palette="primary">Id tempor duis non esse commodo fugiat excepteur nostrud.</Heading>
   ))
-  .add('palette reverse', () => (
-    <Heading palette="primary" reverse>
+  .add('palette $reverse', () => (
+    <Heading palette="primary" $reverse>
       Id tempor duis non esse commodo fugiat excepteur nostrud.
     </Heading>
   ))
@@ -19,4 +19,4 @@ storiesOf('Heading', module)
   ))
   .add('level 3', () => (
     <Heading level={3}>Id tempor duis non esse commodo fugiat excepteur nostrud.</Heading>
-  ))
+  ));

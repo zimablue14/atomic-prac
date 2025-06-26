@@ -1,11 +1,7 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import { Organism } from 'components'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { Organism } from 'components';
 
 storiesOf('Organism', module)
-  .add('default', () => (
-    <Organism />
-  ))
-  .add('reverse', () => (
-    <Organism reverse />
-  ))
+  .add('default', () => <Organism />)
+  .add('$reverse', () => <Organism $reverse />);

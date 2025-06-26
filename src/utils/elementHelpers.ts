@@ -26,7 +26,7 @@ export const deleteInput = (sections: SectionType[], sectionId: string): Section
   return sections.map((section) => {
     if (section.id !== sectionId) return section;
 
-    const reversed = [...section.elements].reverse();
+    const reversed = [...section.elements].$reverse();
     const index = reversed.findIndex((el) => el.tagName === 'Input');
     if (index === -1) return section;
 

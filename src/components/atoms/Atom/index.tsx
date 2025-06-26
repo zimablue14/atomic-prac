@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 type AtomProps = {
   palette?: string;
-  reverse?: boolean;
+  $reverse?: boolean;
 };
 
 const Atom = styled.span<AtomProps>`

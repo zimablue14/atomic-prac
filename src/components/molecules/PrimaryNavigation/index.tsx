@@ -23,7 +23,7 @@ const Nav = styled.nav`
 `;
 
 type PrimaryNavigationProps = React.HTMLAttributes<HTMLElement> & {
-  reverse?: boolean;
+  $reverse?: boolean;
 };
 
 const PrimaryNavigation: React.FC<PrimaryNavigationProps> = (props) => {

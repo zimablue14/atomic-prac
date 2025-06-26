@@ -1,19 +1,19 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import Block from '.'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import Block from '.';
 
 storiesOf('Block', module)
   .add('default', () => (
     <Block>Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.</Block>
   ))
-  .add('reverse', () => (
-    <Block reverse>Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.</Block>
+  .add('$reverse', () => (
+    <Block $reverse>Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.</Block>
   ))
   .add('palette', () => (
     <Block palette="primary">Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.</Block>
   ))
-  .add('palette reverse', () => (
-    <Block palette="primary" reverse>
+  .add('palette $reverse', () => (
+    <Block palette="primary" $reverse>
       Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.
     </Block>
   ))
@@ -22,8 +22,8 @@ storiesOf('Block', module)
       Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.
     </Block>
   ))
-  .add('palette opaque reverse', () => (
-    <Block palette="primary" opaque reverse>
+  .add('palette opaque $reverse', () => (
+    <Block palette="primary" opaque $reverse>
       Officia aliqua reprehenderit fugiat occaecat quis non eiusmod.
     </Block>
-  ))
+  ));

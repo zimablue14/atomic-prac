@@ -123,7 +123,7 @@ interface SliderProps extends React.InputHTMLAttributes<HTMLInputElement> {
   max?: number;
   defaultValue?: number;
   step?: number;
-  reverse?: boolean;
+  $reverse?: boolean;
   disabled?: boolean;
   responsive?: boolean;
   breakpoint?: number;

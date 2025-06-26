@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type ParagraphProps = {
-  reverse?: boolean;
+  $reverse?: boolean;
 };
 
 const Paragraph = styled.p<ParagraphProps>`

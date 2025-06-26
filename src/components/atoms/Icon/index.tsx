@@ -8,7 +8,7 @@ type IconProps = {
   width?: number;
   height?: number;
   palette?: keyof typeof theme.palette;
-  reverse?: boolean;
+  $reverse?: boolean;
 };
 
 type StyledWrapperProps = Omit<IconProps, 'icon'>;
@@ -25,8 +25,8 @@ const Wrapper = styled.span<StyledWrapperProps>`
   height: 1em;
   margin: 0.1em;
   box-sizing: border-box;
-  color: ${({ theme, palette = 'grayscale', reverse }) =>
-    reverse
+  color: ${({ theme, palette = 'grayscale', $reverse }) =>
+    $reverse
       ? theme.palette[palette][theme.palette[palette].length - 1]
       : theme.palette[palette][1]};
 

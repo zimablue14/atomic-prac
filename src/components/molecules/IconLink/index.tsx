@@ -6,8 +6,8 @@ import Link from '../../atoms/Link';
 
 type StyledIconProps = {
   height?: number;
-  hasText?: boolean;
-  right?: boolean;
+  $hasText?: boolean;
+  $right?: boolean;
   responsive?: boolean;
 };
 
@@ -19,17 +19,17 @@ type IconLinkProps = {
   icon: string;
   height?: number;
   palette?: string;
-  reverse?: boolean;
+  $reverse?: boolean;
   responsive?: boolean;
-  right?: boolean;
+  $right?: boolean;
   children?: React.ReactNode;
 } & React.ComponentProps<typeof Link>;
 
 const fontSize = ({ height }: StyledIconProps): string =>
   height ? `${height / 3 / 16}rem` : '0.75em';
 
-const margin = ({ hasText, right }: StyledIconProps): string =>
-  hasText ? (right ? '0 0 0 0.25em' : '0 0.25em 0 0') : '0';
+const margin = ({ $hasText, $right }: StyledIconProps): string =>
+  $hasText ? ($right ? '0 0 0 0.25em' : '0 0.25em 0 0') : '0';
 
 const StyledIcon = styled(Icon)<StyledIconProps>`
   font-size: ${fontSize};
@@ -49,30 +49,30 @@ const Text = styled.span<TextProps>`
 const IconLink: React.FC<IconLinkProps> = ({
   height,
   icon,
-  right,
+  $right,
   responsive,
   children,
   palette,
-  reverse,
+  $reverse,
   ...props
 }) => {
   const iconElement = (
     <StyledIcon
-      height={height}
       icon={icon}
-      hasText={!!children}
-      right={right}
+      height={height}
+      $hasText={!!children}
+      $right={$right}
       responsive={responsive}
       palette={palette}
-      reverse={reverse}
+      $reverse={$reverse}
     />
   );
 
   return (
     <Link {...props}>
-      {!right && iconElement}
+      {!$right && iconElement}
       <Text responsive={responsive}>{children}</Text>
-      {right && iconElement}
+      {$right && iconElement}
     </Link>
   );
 };

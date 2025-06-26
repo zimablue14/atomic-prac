@@ -1,6 +1,6 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import List from '.'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import List from '.';
 
 storiesOf('List', module)
   .add('default', () => (
@@ -24,10 +24,10 @@ storiesOf('List', module)
       <li>Item 3</li>
     </List>
   ))
-  .add('palette reverse', () => (
-    <List palette="primary" reverse>
+  .add('palette $reverse', () => (
+    <List palette="primary" $reverse>
       <li>Item 1</li>
       <li>Item 2</li>
       <li>Item 3</li>
     </List>
-  ))
+  ));

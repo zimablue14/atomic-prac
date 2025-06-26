@@ -1,7 +1,7 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import { action } from '@storybook/addon-actions'
-import { Modal } from 'components'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
+import { Modal } from 'components';
 
 storiesOf('Modal', module)
   .add('default', () => (
@@ -19,8 +19,8 @@ storiesOf('Modal', module)
       Ullamco et reprehenderit magna cillum ullamco consectetur et enim aliqua.
     </Modal>
   ))
-  .add('reverse', () => (
-    <Modal onClose={action('closed')} reverse isOpen>
+  .add('$reverse', () => (
+    <Modal onClose={action('closed')} $reverse isOpen>
       Ullamco et reprehenderit magna cillum ullamco consectetur et enim aliqua.
     </Modal>
-  ))
+  ));

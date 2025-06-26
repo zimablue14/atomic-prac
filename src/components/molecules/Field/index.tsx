@@ -1,6 +1,9 @@
-import { Label, Input, Block } from 'components';
 import React from 'react';
 import styled from 'styled-components';
+
+import Block from '../../atoms/Block';
+import Input from '../../atoms/Input';
+import Label from '../../atoms/Label';
 
 type FieldProps = {
   name: string;

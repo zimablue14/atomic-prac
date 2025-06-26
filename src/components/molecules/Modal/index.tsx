@@ -1,7 +1,9 @@
-import { Heading, IconButton } from 'components';
 import type { ReactNode } from 'react';
-import ReactModal from 'react-modal';
+import ReactModal, { type Props as ReactModalProps } from 'react-modal';
 import styled, { css, createGlobalStyle } from 'styled-components';
+
+import Heading from '../../atoms/Heading';
+import IconButton from '../IconButton';
 
 const GlobalStyle = createGlobalStyle`
   body.ReactModal__Body--open {
@@ -27,7 +29,9 @@ const overlayStyles = css`
   }
 `;
 
-const ModalBox = styled(ReactModal)<{ hasHeader: boolean }>`
+const ModalBox = styled(ReactModal).withConfig({
+  shouldForwardProp: (prop) => prop !== 'hasHeader',
+})<{ hasHeader: boolean }>`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -82,25 +86,33 @@ const Content = styled.div`
   margin-bottom: 1rem;
 `;
 
-const StyledReactModal = styled(({ className, ...props }: any) => (
-  <ModalBox overlayClassName={className} closeTimeoutMS={250} {...props} />
-))`
+const StyledReactModal = styled(
+  ({
+    className,
+    hasHeader,
+    ...props
+  }: ReactModalProps & { hasHeader: boolean; className?: string }) => (
+    <ModalBox overlayClassName={className} closeTimeoutMS={250} hasHeader={hasHeader} {...props} />
+  ),
+)`
   ${overlayStyles}
 `;
 
 interface ModalProps {
+  isOpen: boolean;
   children?: ReactNode;
   title?: string;
   closeable?: boolean;
-  reverse?: boolean;
+  $reverse?: boolean;
   onClose: () => void;
 }
 
 const Modal: React.FC<ModalProps> = ({
+  isOpen,
   children,
   title,
   closeable,
-  reverse,
+  $reverse,
   onClose,
   ...props
 }) => {
@@ -109,6 +121,7 @@ const Modal: React.FC<ModalProps> = ({
     <>
       <GlobalStyle />
       <StyledReactModal
+        isOpen={isOpen}
         contentLabel={title || 'Modal'}
         onRequestClose={onClose}
         hasHeader={hasHeader}
@@ -116,10 +129,10 @@ const Modal: React.FC<ModalProps> = ({
       >
         {hasHeader && (
           <Header>
-            <StyledHeading level={2} reverse={reverse}>
+            <StyledHeading level={2} $reverse={$reverse}>
               {title}
             </StyledHeading>
-            {closeable && <IconButton icon="close" onClick={onClose} palette="white" reverse />}
+            {closeable && <IconButton icon="close" onClick={onClose} palette="white" $reverse />}
           </Header>
         )}
         <Content>{children}</Content>

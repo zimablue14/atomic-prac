@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 `;
 
 interface MoleculeProps extends React.HTMLAttributes<HTMLDivElement> {
-  reverse?: boolean;
+  $reverse?: boolean;
   children?: ReactNode;
 }
 

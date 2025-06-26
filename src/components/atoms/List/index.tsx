@@ -6,7 +6,7 @@ import type theme from '../../../styles/defaultTheme';
 type ListProps = {
   ordered?: boolean;
   palette?: keyof typeof theme.palette;
-  reverse?: boolean;
+  $reverse?: boolean;
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLUListElement | HTMLOListElement>;
 
@@ -15,8 +15,8 @@ const styles = css<ListProps>`
   margin: 1rem 0;
   padding-left: 1.6rem;
   line-height: 1.7rem;
-  color: ${({ theme, palette = 'grayscale', reverse }) =>
-    reverse
+  color: ${({ theme, palette = 'grayscale', $reverse }) =>
+    $reverse
       ? theme.palette[palette][theme.palette[palette].length - 1]
       : theme.palette[palette][1]};
 `;

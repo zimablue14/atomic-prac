@@ -6,7 +6,7 @@ import type theme from '../../../styles/defaultTheme';
 type HeadingProps = {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   children: React.ReactNode;
-  reverse?: boolean;
+  $reverse?: boolean;
   palette?: keyof typeof theme.palette;
 };
 
@@ -19,8 +19,8 @@ const styles = css<HeadingProps>`
   margin: 0;
   margin-top: 0.85714em;
   margin-bottom: 0.57142em;
-  color: ${({ theme, palette = 'grayscale', reverse }) =>
-    reverse
+  color: ${({ theme, palette = 'grayscale', $reverse }) =>
+    $reverse
       ? theme.palette[palette][theme.palette[palette].length - 1]
       : theme.palette[palette][0]};
 `;

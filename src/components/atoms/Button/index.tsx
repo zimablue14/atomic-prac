@@ -10,7 +10,7 @@ type ButtonProps = {
   disabled?: boolean;
   palette?: PaletteKey;
   transparent?: boolean;
-  reverse?: boolean;
+  $reverse?: boolean;
   height?: number;
   type?: 'button' | 'submit' | 'reset';
   to?: string;

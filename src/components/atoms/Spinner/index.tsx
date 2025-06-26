@@ -9,14 +9,14 @@ const spin = keyframes`
 
 interface SpinnerProps {
   palette?: keyof typeof theme.palette;
-  reverse?: boolean;
+  $reverse?: boolean;
 }
 
 const Spinner = styled.div<SpinnerProps>`
   position: relative;
   border: 0.2em solid
-    ${({ theme, reverse, palette = 'grayscale' }) =>
-      reverse
+    ${({ theme, $reverse, palette = 'grayscale' }) =>
+      $reverse
         ? theme.palette[palette][1]
         : theme.palette[palette][5] || theme.palette.grayscale[1]};
   border-bottom-color: ${({ theme, palette = 'primary' }) => theme.palette[palette][1]};

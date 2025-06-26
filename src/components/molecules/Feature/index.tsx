@@ -60,7 +60,7 @@ const Feature: React.FC<FeatureProps> = ({ icon, title, link, code, children, so
       <Text>
         <Heading level={2}>{link ? <Link href={link}>{title}</Link> : title}</Heading>
         <Paragraph>{children}</Paragraph>
-        {code && <PreformattedText block>{code}</PreformattedText>}
+        {code && <PreformattedText $block>{code}</PreformattedText>}
       </Text>
       {soon && <StyledBadge palette="grayscale">soon</StyledBadge>}
     </Wrapper>

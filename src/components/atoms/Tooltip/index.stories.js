@@ -1,6 +1,6 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import Tooltip from '.'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import Tooltip from '.';
 
 storiesOf('Tooltip', module)
   .add('default', () => (
@@ -10,9 +10,9 @@ storiesOf('Tooltip', module)
       </Tooltip>
     </div>
   ))
-  .add('reverse', () => (
+  .add('$reverse', () => (
     <div style={{ margin: 100 }}>
-      <Tooltip data-title="Hello!" reverse>
+      <Tooltip data-title="Hello!" $reverse>
         <a href="#foo">Hover me</a>
       </Tooltip>
     </div>
@@ -51,4 +51,4 @@ storiesOf('Tooltip', module)
         <a href="#foo">Hover me</a>
       </Tooltip>
     </div>
-  ))
+  ));

@@ -25,10 +25,10 @@ const InnerWrapper = styled.div`
 
 const Header = (props: React.ComponentProps<typeof Wrapper>) => {
   return (
-    <Wrapper opaque reverse {...props}>
+    <Wrapper $opaque $$reverse {...props}>
       <InnerWrapper>
-        <IconLink to="/" icon="arc" height={100} />
-        <PrimaryNavigation reverse />
+        <IconLink to="/" icon="arc" height={100} palette="primary" $reverse />
+        <PrimaryNavigation $reverse />
       </InnerWrapper>
     </Wrapper>
   );

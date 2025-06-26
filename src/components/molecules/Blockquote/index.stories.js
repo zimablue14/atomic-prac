@@ -1,6 +1,6 @@
-import React from 'react'
-import { storiesOf } from '@storybook/react'
-import { Blockquote } from 'components'
+import React from 'react';
+import { storiesOf } from '@storybook/react';
+import { Blockquote } from 'components';
 
 storiesOf('Blockquote', module)
   .add('default', () => (
@@ -8,8 +8,8 @@ storiesOf('Blockquote', module)
       Ullamco et reprehenderit magna cillum ullamco consectetur et enim aliqua.
     </Blockquote>
   ))
-  .add('reverse', () => (
-    <Blockquote reverse>
+  .add('$reverse', () => (
+    <Blockquote $reverse>
       Ullamco et reprehenderit magna cillum ullamco consectetur et enim aliqua.
     </Blockquote>
   ))
@@ -17,4 +17,4 @@ storiesOf('Blockquote', module)
     <Blockquote cite="Foo">
       Ullamco et reprehenderit magna cillum ullamco consectetur et enim aliqua.
     </Blockquote>
-  ))
+  ));

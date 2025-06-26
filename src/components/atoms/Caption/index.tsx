@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type CaptionProps = {
-  reverse?: boolean;
+  $reverse?: boolean;
 };
 
 const Caption = styled.caption<CaptionProps>`

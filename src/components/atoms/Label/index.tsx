@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 type LabelProps = {
-  reverse?: boolean;
+  $reverse?: boolean;
 } & React.LabelHTMLAttributes<HTMLLabelElement>;
 
 const Label = styled.label<LabelProps>`
