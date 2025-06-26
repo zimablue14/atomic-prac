@@ -1,17 +1,33 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
+import React from 'react';
 
 type AtomProps = {
-  palette?: 'primary' | 'secondary' | 'grayscale';
+  palette?: 'grayscale' | 'primary' | 'secondary' | 'danger' | 'alert' | 'success';
   reverse?: boolean;
   children: React.ReactNode;
 };
 
-export const Atom = ({ palette = 'grayscale', reverse, children }: AtomProps) => {
-  const textColor = {
-    grayscale: reverse ? 'text-white' : 'text-grayscale-800',
-    primary: reverse ? 'text-white' : 'text-primary-400',
-    secondary: reverse ? 'text-white' : 'text-secondary-400',
-  }[palette];
-
-  return <span className={clsx('font-primary', textColor)}>{children}</span>;
+const paletteMap: Record<NonNullable<AtomProps['palette']>, string> = {
+  grayscale: 'text-grayscale-100',
+  primary: 'text-primary-100',
+  secondary: 'text-secondary-100',
+  danger: 'text-danger-100',
+  alert: 'text-alert-100',
+  success: 'text-success-100',
 };
+
+const Atom: React.FC<AtomProps> = ({ palette = 'grayscale', reverse, children }) => {
+  return (
+    <span
+      className={clsx(
+        'font-display',
+        paletteMap[palette],
+        reverse && 'invert', // 필요 시 색 반전 효과
+      )}
+    >
+      {children}
+    </span>
+  );
+};
+
+export default Atom;

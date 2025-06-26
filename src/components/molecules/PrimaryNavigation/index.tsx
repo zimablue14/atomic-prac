@@ -1,19 +1,22 @@
 import clsx from 'clsx';
-import React from 'react';
+import type { FC } from 'react';
 
 import Link from '../../atoms/Link';
 
-type PrimaryNavigationProps = React.HTMLAttributes<HTMLElement> & {
+type PrimaryNavigationProps = {
+  className?: string;
   reverse?: boolean;
 };
 
-const PrimaryNavigation: React.FC<PrimaryNavigationProps> = ({ className, ...props }) => {
+const PrimaryNavigation: FC<PrimaryNavigationProps> = ({ className }) => {
   return (
-    <nav className={clsx('flex list-none', className)} {...props}>
+    <nav className={clsx('flex list-none', className)}>
       <li>
         <Link
           to="/"
-          className="text-grayscale-300 [&.active]:text-grayscale-100 text-xl font-light"
+          className={({ isActive }) =>
+            clsx('text-xl font-light', isActive ? 'text-black' : 'text-gray-500')
+          }
         >
           Home
         </Link>
@@ -21,7 +24,9 @@ const PrimaryNavigation: React.FC<PrimaryNavigationProps> = ({ className, ...pro
       <li className="ml-4">
         <Link
           to="/sample-page"
-          className="text-grayscale-300 [&.active]:text-grayscale-100 text-xl font-light"
+          className={({ isActive }) =>
+            clsx('text-xl font-light', isActive ? 'text-black' : 'text-gray-500')
+          }
         >
           Sample page
         </Link>

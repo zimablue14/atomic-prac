@@ -1,5 +1,4 @@
-import clsx from 'clsx';
-import React from 'react';
+import type { ReactNode } from 'react';
 
 import Badge from '../../atoms/Badge';
 import Heading from '../../atoms/Heading';
@@ -13,33 +12,22 @@ type FeatureProps = {
   icon?: string;
   link?: string;
   soon?: boolean;
-  code?: React.ReactNode;
-  children?: React.ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>;
+  code?: ReactNode;
+  children?: ReactNode;
+  className?: string;
+};
 
-const Feature: React.FC<FeatureProps> = ({
-  icon,
-  title,
-  link,
-  code,
-  children,
-  soon,
-  className = '',
-  ...props
-}) => {
+const Feature = ({ title, icon, link, soon = false, code, children, className }: FeatureProps) => {
   return (
     <div
-      className={clsx(
-        'relative box-border flex p-4 transition-opacity sm:p-2',
-        soon && 'opacity-40',
-        className,
-      )}
-      {...props}
+      className={`relative box-border flex p-4 transition-opacity sm:p-2 ${
+        soon ? 'opacity-40' : 'opacity-100'
+      } ${className ?? ''}`}
     >
       {icon && <Icon icon={icon} width={64} className="flex-none sm:w-8" />}
 
       <div className="ml-4 overflow-auto">
-        <Heading level={2}>{link ? <Link href={link}>{title}</Link> : title}</Heading>
+        <Heading level={2}>{link ? <Link to={link}>{title}</Link> : title}</Heading>
         <Paragraph>{children}</Paragraph>
         {code && <PreformattedText block>{code}</PreformattedText>}
       </div>

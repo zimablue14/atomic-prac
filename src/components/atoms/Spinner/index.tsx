@@ -1,36 +1,46 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import React from 'react';
 
-interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
+type Palette = 'primary' | 'secondary' | 'danger' | 'alert' | 'success' | 'grayscale';
+
+type SpinnerProps = {
+  palette?: Palette;
   reverse?: boolean;
-  palette?: 'primary' | 'grayscale';
-}
+  className?: string;
+};
 
-const Spinner: React.FC<SpinnerProps> = ({
-  reverse = false,
-  palette = 'grayscale',
-  className,
-  ...props
-}) => {
-  const outerBorder =
-    palette === 'primary'
-      ? reverse
-        ? 'border-primary-100'
-        : 'border-primary-500'
-      : reverse
-        ? 'border-gray-100'
-        : 'border-gray-500';
+const borderBaseMap: Record<Palette, string> = {
+  grayscale: 'border-grayscale-200',
+  primary: 'border-primary-200',
+  secondary: 'border-secondary-200',
+  danger: 'border-danger-200',
+  alert: 'border-alert-200',
+  success: 'border-success-200',
+};
 
-  const bottomBorder = palette === 'primary' ? 'border-b-primary-100' : 'border-b-gray-100';
+const borderBottomMap: Record<Palette, string> = {
+  grayscale: 'border-b-grayscale-100',
+  primary: 'border-b-primary-100',
+  secondary: 'border-b-secondary-100',
+  danger: 'border-b-danger-100',
+  alert: 'border-b-alert-100',
+  success: 'border-b-success-100',
+};
 
-  const classes = clsx(
-    'relative w-4 h-4 border-[0.2em] border-solid rounded-full animate-spin',
-    outerBorder,
-    bottomBorder,
-    className,
+const Spinner: React.FC<SpinnerProps> = ({ palette = 'primary', className }) => {
+  const borderBase = borderBaseMap[palette] ?? borderBaseMap.primary;
+  const borderBottom = borderBottomMap[palette] ?? borderBottomMap.primary;
+
+  return (
+    <div
+      className={clsx(
+        'relative mx-auto h-[1em] w-[1em] animate-spin rounded-full border-[0.2em]',
+        borderBase,
+        borderBottom,
+        className,
+      )}
+    />
   );
-
-  return <div className={classes} {...props} />;
 };
 
 export default Spinner;

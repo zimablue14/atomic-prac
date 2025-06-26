@@ -1,25 +1,31 @@
-import clsx from 'clsx';
-import type { HTMLAttributes, ReactNode } from 'react';
+import { clsx } from 'clsx';
+import React from 'react';
 
 type TableCellProps = {
   heading?: boolean;
-  children: ReactNode;
+  children?: React.ReactNode;
   className?: string;
-} & HTMLAttributes<HTMLTableCellElement>;
+} & React.ThHTMLAttributes<HTMLTableHeaderCellElement> &
+  React.TdHTMLAttributes<HTMLTableDataCellElement>;
 
-const TableCell = ({ heading = false, children, className, ...props }: TableCellProps) => {
-  const commonClasses = clsx('text-left p-3', className);
+const TableCell: React.FC<TableCellProps> = ({
+  heading = false,
+  children,
+  className,
+  ...props
+}) => {
+  const baseClass = clsx('text-left p-3', className);
 
   if (heading) {
     return (
-      <th className={commonClasses} {...props}>
+      <th className={baseClass} {...props}>
         {children}
       </th>
     );
   }
 
   return (
-    <td className={commonClasses} {...props}>
+    <td className={baseClass} {...props}>
       {children}
     </td>
   );

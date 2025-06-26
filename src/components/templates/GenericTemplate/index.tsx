@@ -1,10 +1,10 @@
 import React from 'react';
 
-type GenericTemplateProps = {
+type GenericTemplateProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode;
-} & React.HTMLAttributes<HTMLDivElement>;
+};
 
-const GenericTemplate: React.FC<GenericTemplateProps> = ({ children, className, ...props }) => {
+const GenericTemplate = ({ children, className, ...props }: GenericTemplateProps) => {
   return (
     <div
       className={`box-border flex min-h-screen flex-col pt-[3.75rem] ${className ?? ''}`}

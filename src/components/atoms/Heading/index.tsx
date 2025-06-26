@@ -1,56 +1,51 @@
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import React, { type JSX } from 'react';
 
-type HeadingProps = {
+type HeadingProps = React.HTMLAttributes<HTMLHeadingElement> & {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   children: React.ReactNode;
   reverse?: boolean;
-  palette?: 'primary' | 'secondary' | 'danger' | 'alert' | 'success' | 'white' | 'grayscale';
-  className?: string;
+  palette?: keyof typeof textMap;
 };
 
-const levelToStyle: Record<number, string> = {
-  1: 'text-2xl mt-4 mb-2',
-  2: 'text-xl mt-4 mb-2',
-  3: 'text-lg mt-3 mb-2',
-  4: 'text-base mt-3 mb-1.5',
-  5: 'text-sm mt-2 mb-1',
-  6: 'text-xs mt-2 mb-1',
+const levelToTextSize: Record<NonNullable<HeadingProps['level']>, string> = {
+  1: 'text-3xl',
+  2: 'text-2xl',
+  3: 'text-xl',
+  4: 'text-lg',
+  5: 'text-base',
+  6: 'text-sm',
 };
 
-const paletteToColor = (palette: string = 'grayscale', reverse = false): string => {
-  const map: Record<string, [string, string]> = {
-    grayscale: ['text-grayscale-800', 'text-grayscale-0'],
-    primary: ['text-primary-400', 'text-white'],
-    secondary: ['text-secondary-400', 'text-white'],
-    danger: ['text-danger-400', 'text-white'],
-    alert: ['text-alert-400', 'text-white'],
-    success: ['text-success-400', 'text-white'],
-    white: ['text-white', 'text-black'],
-  };
-
-  const [normal, reversed] = map[palette] ?? map.grayscale;
-  return reverse ? reversed : normal;
+const textMap = {
+  grayscale: 'text-grayscale-200',
+  primary: 'text-primary-100',
+  secondary: 'text-secondary-100',
+  danger: 'text-danger-100',
+  alert: 'text-alert-100',
+  success: 'text-success-100',
 };
 
 const Heading: React.FC<HeadingProps> = ({
   level = 1,
   children,
-  reverse = false,
   palette = 'grayscale',
+  ...rest
 }) => {
-  const Tag = `h${level}` as keyof JSX.IntrinsicElements;
+  const Component = `h${level}` as keyof JSX.IntrinsicElements;
+  const textColor = textMap[palette] ?? textMap.grayscale;
 
-  return (
-    <Tag
-      className={clsx(
-        'font-primary font-medium',
-        levelToStyle[level],
-        paletteToColor(palette, reverse),
-      )}
-    >
-      {children}
-    </Tag>
+  return React.createElement(
+    Component,
+    {
+      className: clsx(
+        'font-display font-medium mt-[0.85714em] mb-[0.57142em]',
+        levelToTextSize[level],
+        textColor,
+      ),
+      ...rest,
+    },
+    children,
   );
 };
 

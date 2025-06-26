@@ -1,39 +1,35 @@
 import clsx from 'clsx';
-import React from 'react';
+import type { FC } from 'react';
 
-interface SliderProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type SliderProps = {
   id?: string;
   min?: number;
   max?: number;
   defaultValue?: number;
   step?: number;
-  reverse?: boolean;
   disabled?: boolean;
   responsive?: boolean;
-  breakpoint?: number;
-  height?: number;
-}
+  breakpoint?: number; // Tailwind 기준이면 sm: 640px, md: 768px 등으로 대체 가능
+};
 
-const Slider: React.FC<SliderProps> = ({
+const Slider: FC<SliderProps> = ({
   id,
   min = 0,
   max = 2,
   defaultValue = 1,
   step = 1,
+  disabled = false,
   responsive = false,
-  breakpoint = 420,
-  height = 36,
-  ...props
+  breakpoint = 640, // default: sm 기준
 }) => {
-  const fontSize = `${height / 35.5555555556}rem`;
-  const textHideClass = responsive ? `max-[${breakpoint}px]:hidden` : '';
-
   return (
-    <div
-      className="font-primary text-grayscale-0 flex h-full w-full items-center justify-center bg-transparent"
-      style={{ fontSize }}
-    >
-      <span className={clsx('px-[0.4375em]', textHideClass)}>{min}</span>
+    <div className="flex h-full w-full items-center justify-center font-sans text-sm font-medium text-gray-900">
+      {/* Min 텍스트 */}
+      <span className={clsx('px-2', responsive && `hidden max-[${breakpoint}px]:!hidden`)}>
+        {min}
+      </span>
+
+      {/* 슬라이더 */}
       <input
         id={id}
         type="range"
@@ -41,29 +37,22 @@ const Slider: React.FC<SliderProps> = ({
         max={max}
         defaultValue={defaultValue}
         step={step}
-        disabled={props.disabled}
+        disabled={disabled}
         className={clsx(
-          'mx-[0.4375em] h-4 w-full appearance-none bg-transparent focus:outline-none',
-          '[&::-webkit-slider-thumb]:appearance-none',
-          '[&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6',
-          '[&::-webkit-slider-thumb]:rounded [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-transparent',
-          '[&::-webkit-slider-thumb]:transition-colors [&::-webkit-slider-thumb]:duration-150',
-          props.disabled
-            ? '[&::-webkit-slider-thumb]:bg-primary-2'
-            : '[&::-webkit-slider-thumb]:bg-primary-1 [&::-webkit-slider-thumb]:hover:bg-primary-0',
-          '[&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6',
-          '[&::-moz-range-thumb]:rounded [&::-moz-range-thumb]:border [&::-moz-range-thumb]:border-transparent',
-          props.disabled
-            ? '[&::-moz-range-thumb]:bg-primary-2'
-            : '[&::-moz-range-thumb]:bg-primary-1 [&::-moz-range-thumb]:hover:bg-primary-0',
-          '[&::-ms-thumb]:h-6 [&::-ms-thumb]:w-6 [&::-ms-thumb]:rounded [&::-ms-thumb]:border [&::-ms-thumb]:border-transparent',
-          '[&::-webkit-slider-runnable-track]:bg-grayscale-2 [&::-webkit-slider-runnable-track]:h-[0.6em] [&::-webkit-slider-runnable-track]:rounded',
-          '[&::-moz-range-track]:bg-grayscale-2 [&::-moz-range-track]:h-[0.6em] [&::-moz-range-track]:rounded',
-          '[&::-ms-fill-lower]:bg-grayscale-2 [&::-ms-fill-upper]:bg-grayscale-2',
+          'mx-2 h-4 w-full appearance-none bg-transparent',
+          'focus:outline-none',
+          '[&::-webkit-slider-runnable-track]:h-2 [&::-webkit-slider-runnable-track]:rounded [&::-webkit-slider-runnable-track]:bg-gray-300',
+          '[&::-moz-range-track]:h-2 [&::-moz-range-track]:rounded [&::-moz-range-track]:bg-gray-300',
+          '[&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full',
+          '[&::-webkit-slider-thumb]:bg-gray-600 hover:[&::-webkit-slider-thumb]:bg-black',
+          '[&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-gray-600 hover:[&::-moz-range-thumb]:bg-black',
         )}
-        {...props}
       />
-      <span className={clsx('px-[0.4375em]', textHideClass)}>{max}</span>
+
+      {/* Max 텍스트 */}
+      <span className={clsx('px-2', responsive && `hidden max-[${breakpoint}px]:!hidden`)}>
+        {max}
+      </span>
     </div>
   );
 };

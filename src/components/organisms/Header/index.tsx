@@ -1,24 +1,16 @@
-import clsx from 'clsx';
-
-import Block from '../../atoms/Block';
 import IconLink from '../../molecules/IconLink';
 import PrimaryNavigation from '../../molecules/PrimaryNavigation';
 
-type HeaderProps = React.ComponentProps<typeof Block>;
-
-const Header = ({ className, ...props }: HeaderProps) => {
+const Header = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <Block
-      opaque
-      reverse
-      className={clsx('flex justify-center px-4 py-4 sm:py-2', className)}
-      {...props}
-    >
-      <div className="flex w-full max-w-screen-xl items-center gap-4">
+    <div className="bg-white/80 text-black backdrop-blur-sm" {...props}>
+      <div className="mx-auto flex w-full max-w-screen-xl items-center px-4 py-4 sm:py-2">
         <IconLink to="/" icon="arc" height={100} />
-        <PrimaryNavigation reverse />
+        <div className="ml-4">
+          <PrimaryNavigation reverse />
+        </div>
       </div>
-    </Block>
+    </div>
   );
 };
 

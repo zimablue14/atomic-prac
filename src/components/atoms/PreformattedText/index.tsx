@@ -1,29 +1,56 @@
-import clsx from 'clsx';
+// components/PreformattedText.tsx
+import { clsx } from 'clsx';
 import React from 'react';
 
-type PreProps = {
+type PreformattedTextProps = {
+  palette?: 'grayscale' | 'primary' | 'secondary' | 'danger' | 'alert' | 'success';
+  reverse?: boolean;
   block?: boolean;
   wrapped?: boolean;
-  reverse?: boolean;
-  palette?: 'grayscale' | string; // 확장 가능
-} & React.HTMLAttributes<HTMLPreElement>;
+  children: React.ReactNode;
+  className?: string;
+};
 
-const PreformattedText: React.FC<PreProps> = ({
-  block = false,
-  wrapped = false,
-  reverse = false,
+const textMap = {
+  grayscale: 'text-grayscale-100',
+  primary: 'text-primary-100',
+  secondary: 'text-secondary-100',
+  danger: 'text-danger-100',
+  alert: 'text-alert-100',
+  success: 'text-success-100',
+};
+
+const bgMap = {
+  grayscale: 'bg-grayscale-200',
+  primary: 'bg-primary-200',
+  secondary: 'bg-secondary-200',
+  danger: 'bg-danger-200',
+  alert: 'bg-alert-200',
+  success: 'bg-success-200',
+};
+
+const PreformattedText: React.FC<PreformattedTextProps> = ({
+  palette = 'grayscale',
+  block,
+  wrapped,
+  children,
   className,
-  ...props
 }) => {
-  const classes = clsx(
-    block ? 'block p-4' : 'inline px-2',
-    wrapped ? 'whitespace-pre-wrap' : 'whitespace-nowrap',
-    'overflow-auto leading-[1.5] font-mono',
-    reverse ? 'bg-gray-50 text-gray-800' : 'bg-gray-800 text-white',
-    className,
+  return (
+    <pre
+      className={clsx(
+        block ? 'block' : 'inline',
+        'font-pre overflow-auto leading-[150%]',
+        wrapped ? 'whitespace-pre-wrap' : 'whitespace-nowrap',
+        textMap[palette],
+        bgMap[palette],
+        block ? 'p-4' : 'px-2',
+        className,
+      )}
+    >
+      {children}
+    </pre>
   );
-
-  return <pre className={classes} {...props} />;
 };
 
 export default PreformattedText;

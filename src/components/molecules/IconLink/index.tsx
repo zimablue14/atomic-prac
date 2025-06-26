@@ -1,49 +1,48 @@
 import clsx from 'clsx';
-import React from 'react';
 
-import Icon, { type Palette } from '../../atoms/Icon';
+import Icon from '../../atoms/Icon';
 import Link from '../../atoms/Link';
 
 type IconLinkProps = {
+  to?: string;
   icon: string;
   height?: number;
-  palette?: Palette;
+  palette?: 'grayscale' | 'primary' | 'secondary' | 'danger' | 'alert' | 'success';
   reverse?: boolean;
   responsive?: boolean;
   right?: boolean;
   children?: React.ReactNode;
-} & React.ComponentProps<typeof Link>;
+} & React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
-const IconLink: React.FC<IconLinkProps> = ({
-  height,
+const IconLink = ({
   icon,
-  right = false,
-  responsive = false,
-  children,
+  height,
   palette,
   reverse,
+  responsive,
+  right,
+  children,
   className,
   ...props
-}) => {
-  const hasText = !!children;
-
-  const iconSize = height ? height / 3 : 12; // px 단위
-  const iconMargin = hasText ? (right ? 'ml-1' : 'mr-1') : '';
-
+}: IconLinkProps) => {
   const iconElement = (
     <Icon
       icon={icon}
-      height={iconSize}
+      height={height}
       palette={palette}
       reverse={reverse}
-      className={clsx('inline-block align-middle', iconMargin, responsive && 'max-[420px]:m-0')}
+      className={clsx(
+        'inline-block',
+        children && (right ? 'ml-1' : 'mr-1'),
+        responsive && 'max-[420px]:m-0',
+      )}
     />
   );
 
   return (
     <Link {...props} className={clsx('inline-flex items-center', className)}>
       {!right && iconElement}
-      {hasText && <span className={clsx(responsive && 'max-[420px]:hidden')}>{children}</span>}
+      <span className={clsx(responsive && 'max-[420px]:hidden')}>{children}</span>
       {right && iconElement}
     </Link>
   );

@@ -1,39 +1,50 @@
 import clsx from 'clsx';
-
-type Palette = 'primary' | 'secondary' | 'danger' | 'alert' | 'success' | 'white' | 'grayscale';
+import React from 'react';
 
 type BlockProps = {
-  palette?: Palette;
-  opaque?: boolean;
+  palette?: keyof typeof textMap;
   reverse?: boolean;
-  className?: string;
-  children: React.ReactNode;
+  opaque?: boolean;
+} & React.HTMLAttributes<HTMLDivElement>;
+
+const textMap = {
+  grayscale: 'text-grayscale-100',
+  primary: 'text-primary-100',
+  secondary: 'text-secondary-100',
+  danger: 'text-danger-100',
+  alert: 'text-alert-100',
+  success: 'text-success-100',
 };
 
-const Block = ({ palette = 'grayscale', opaque = false, className, children }: BlockProps) => {
-  const bgColor = opaque
-    ? {
-        primary: 'bg-primary-100',
-        secondary: 'bg-secondary-100',
-        danger: 'bg-danger-100',
-        alert: 'bg-alert-100',
-        success: 'bg-success-100',
-        white: 'bg-white-100',
-        grayscale: 'bg-grayscale-100',
-      }[palette]
-    : 'bg-transparent';
+const bgMap = {
+  grayscale: 'bg-white',
+  primary: 'bg-primary-100',
+  secondary: 'bg-secondary-100',
+  danger: 'bg-danger-100',
+  alert: 'bg-alert-100',
+  success: 'bg-success-100',
+};
 
-  const textColor = {
-    primary: 'text-primary-200',
-    secondary: 'text-secondary-200',
-    danger: 'text-danger-200',
-    alert: 'text-alert-200',
-    success: 'text-success-200',
-    white: 'text-white-200',
-    grayscale: 'text-grayscale-200',
-  }[palette];
-
-  return <div className={clsx('font-primary', bgColor, textColor, className)}>{children}</div>;
+const Block: React.FC<BlockProps> = ({
+  palette = 'grayscale',
+  opaque,
+  className,
+  children,
+  ...rest
+}) => {
+  return (
+    <div
+      {...rest}
+      className={clsx(
+        'font-display',
+        textMap[palette],
+        opaque ? bgMap[palette] : 'bg-transparent',
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default Block;

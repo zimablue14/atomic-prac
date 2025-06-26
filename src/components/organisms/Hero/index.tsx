@@ -1,6 +1,3 @@
-import clsx from 'clsx';
-
-import Block from '../../atoms/Block';
 import Heading from '../../atoms/Heading';
 import LogoImage from '../../atoms/LogoImage';
 import Paragraph from '../../atoms/Paragraph';
@@ -9,21 +6,14 @@ import Tooltip from '../../atoms/Tooltip';
 import IconButton from '../../molecules/IconButton';
 import IconLink from '../../molecules/IconLink';
 
-type HeroProps = React.ComponentProps<typeof Block>;
-
-const Hero = ({ className, ...props }: HeroProps) => {
+const Hero = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return (
-    <Block
-      opaque
-      reverse
-      className={clsx('box-border flex justify-center px-8 py-8 sm:px-1 sm:py-8', className)}
-      {...props}
-    >
-      <div className="flex w-full max-w-screen-xl flex-wrap sm:flex-wrap">
-        {/* Section 1 */}
-        <section className="box-border flex flex-col items-center px-8 py-8 sm:w-full sm:p-1">
+    <div className="flex justify-center px-8 py-8 sm:px-1.5" {...props}>
+      <div className="flex w-full max-w-screen-xl flex-wrap sm:flex-nowrap">
+        {/* 좌측 섹션 */}
+        <section className="flex flex-col items-center p-8 sm:w-auto sm:p-1">
           <LogoImage height={265} />
-          <div className="mt-8 flex gap-2">
+          <div className="mt-8 flex">
             <Tooltip reverse data-title="Just a fancy tooltip 😄">
               <IconButton icon="github" href="https://github.com/diegohaz/arc">
                 GitHub
@@ -42,14 +32,14 @@ const Hero = ({ className, ...props }: HeroProps) => {
           </div>
         </section>
 
-        {/* Section 2 */}
-        <section className="box-border flex flex-col items-center px-8 py-8 sm:w-full sm:p-1">
-          <Paragraph className="text-grayscale-300 w-full text-[1.35rem] leading-[1.35em] font-light tracking-wide sm:text-center sm:text-base">
-            <strong>ARc</strong> is a
+        {/* 우측 섹션 */}
+        <section className="flex flex-col items-center p-8 sm:w-full sm:p-1">
+          <Paragraph className="w-full text-[1.35rem] leading-[1.35em] font-light tracking-wide text-gray-500 sm:text-center sm:text-base">
+            <strong>ARc</strong> is a{' '}
             <IconLink reverse icon="react" href="https://facebook.github.io/react/">
               React
             </IconLink>{' '}
-            starter kit based on the
+            starter kit based on the{' '}
             <IconLink
               reverse
               icon="atomic-design"
@@ -57,9 +47,8 @@ const Hero = ({ className, ...props }: HeroProps) => {
             >
               Atomic Design
             </IconLink>{' '}
-            methodology. It&apos;s
-            <strong> progressive</strong>, which means that you can start with the basic boilerplate
-            and try the other features when you are comfortable.
+            methodology. It&apos;s <strong>progressive</strong>, which means that you can start with
+            the basic boilerplate and try the other features when you are comfortable.
           </Paragraph>
 
           <div className="mt-8 w-full sm:mt-4">
@@ -75,7 +64,7 @@ const Hero = ({ className, ...props }: HeroProps) => {
           </div>
         </section>
       </div>
-    </Block>
+    </div>
   );
 };
 

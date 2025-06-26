@@ -8,15 +8,15 @@ type PageTemplateProps = {
   children: React.ReactNode;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const PageTemplate: React.FC<PageTemplateProps> = ({
+const PageTemplate = ({
   header,
   hero,
   sponsor,
-  footer,
   children,
+  footer,
   className,
   ...props
-}) => {
+}: PageTemplateProps) => {
   return (
     <div
       className={`box-border flex min-h-screen flex-col pt-[3.75rem] sm:pt-[3.25rem] ${className ?? ''}`}
@@ -25,7 +25,7 @@ const PageTemplate: React.FC<PageTemplateProps> = ({
       <header className="fixed top-0 z-[999] w-full">{header}</header>
       {hero && <section>{hero}</section>}
       {sponsor && <section>{sponsor}</section>}
-      <section className="mx-auto my-8 box-border w-full max-w-[920px]">{children}</section>
+      <section className="mx-auto my-8 box-border w-full max-w-screen-xl">{children}</section>
       <footer className="mt-auto">{footer}</footer>
     </div>
   );

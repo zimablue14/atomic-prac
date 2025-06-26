@@ -1,71 +1,50 @@
-import React from 'react';
+import clsx from 'clsx';
+import { type FC, type InputHTMLAttributes } from 'react';
 
+import Block from '../../atoms/Block';
 import Input from '../../atoms/Input';
 import Label from '../../atoms/Label';
 
-type CommonFieldProps = {
+type FieldProps = {
   name: string;
+  type?: string;
   label?: string;
   error?: string;
   invalid?: boolean;
-};
+} & InputHTMLAttributes<HTMLInputElement>;
 
-type InputFieldProps = CommonFieldProps &
-  React.InputHTMLAttributes<HTMLInputElement> & {
-    type?: 'text' | 'checkbox' | 'radio';
+const Field: FC<FieldProps> = ({ name, type = 'text', label, error, invalid, ...props }) => {
+  const inputProps = {
+    id: name,
+    name,
+    type,
+    'aria-describedby': `${name}Error`,
+    'aria-invalid': invalid,
+    ...props,
   };
 
-type TextareaFieldProps = CommonFieldProps &
-  React.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-    type: 'textarea';
-  };
-
-type SelectFieldProps = CommonFieldProps &
-  React.SelectHTMLAttributes<HTMLSelectElement> & {
-    type: 'select';
-  };
-
-type FieldProps = InputFieldProps | TextareaFieldProps | SelectFieldProps;
-
-const Field: React.FC<FieldProps> = ({ error, name, invalid, label, type = 'text', ...props }) => {
-  const id = name;
-  const describedBy = `${name}Error`;
-
-  const isCheckboxOrRadio = type === 'checkbox' || type === 'radio';
-  const isInputType = type === 'text' || isCheckboxOrRadio;
+  const renderInputFirst = type === 'checkbox' || type === 'radio';
 
   return (
     <div className="mb-4">
-      <div className="flex items-center gap-2">
-        {isInputType && isCheckboxOrRadio && (
-          <Input
-            {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
-            id={id}
-            name={name}
-            type={type}
-            invalid={invalid}
-            aria-describedby={describedBy}
-          />
+      <div
+        className={clsx({
+          'flex items-center': renderInputFirst,
+        })}
+      >
+        {renderInputFirst && <Input {...inputProps} />}
+        {label && (
+          <Label htmlFor={inputProps.id} className="align-middle">
+            {label}
+          </Label>
         )}
-
-        {label && <Label htmlFor={id}>{label}</Label>}
-
-        {isInputType && !isCheckboxOrRadio && (
-          <Input
-            {...(props as React.InputHTMLAttributes<HTMLInputElement>)}
-            id={id}
-            name={name}
-            type={type}
-            invalid={invalid}
-            aria-describedby={describedBy}
-          />
-        )}
+        {!renderInputFirst && <Input {...inputProps} />}
       </div>
 
       {invalid && error && (
-        <p id={describedBy} role="alert" className="mt-2 text-sm text-red-500">
+        <Block id={`${name}Error`} role="alert" palette="danger" className="mt-2">
           {error}
-        </p>
+        </Block>
       )}
     </div>
   );

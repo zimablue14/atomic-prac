@@ -1,81 +1,48 @@
-import clsx from 'clsx';
-import React from 'react';
+import { clsx } from 'clsx';
+import type { FC } from 'react';
 import { NavLink, type NavLinkProps, type NavLinkRenderProps } from 'react-router-dom';
 
-type PaletteKey = 'primary' | 'secondary' | 'grayscale' | 'danger' | string;
-
-interface CommonProps {
+type LinkProps = {
+  to?: string;
+  className?: string | ((props: NavLinkRenderProps) => string);
+  palette?: 'grayscale' | 'primary' | 'secondary' | 'danger' | 'alert' | 'success';
   reverse?: boolean;
-  palette?: PaletteKey;
-  className?: string;
-  children?: React.ReactNode;
-}
+  children: React.ReactNode;
+} & Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'className' | 'href'> &
+  Omit<NavLinkProps, 'className' | 'to'>;
 
-type AnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement> &
-  CommonProps & {
-    to?: undefined;
-  };
-
-type InternalLinkProps = Omit<NavLinkProps, 'className' | 'children'> &
-  CommonProps & {
-    to: string;
-  };
-
-type LinkProps = InternalLinkProps | AnchorProps;
-
-const baseClass = 'font-primary font-medium no-underline hover:underline';
-
-const paletteClass = (palette: PaletteKey = 'primary', reverse?: boolean) => {
-  const colorKey = reverse ? 'last' : 'default';
-  const classMap: Record<PaletteKey, Record<'default' | 'last', string>> = {
-    primary: {
-      default: 'text-primary-500',
-      last: 'text-primary-900',
-    },
-    secondary: {
-      default: 'text-secondary-500',
-      last: 'text-secondary-900',
-    },
-    grayscale: {
-      default: 'text-grayscale-400',
-      last: 'text-grayscale-900',
-    },
-    danger: {
-      default: 'text-danger-500',
-      last: 'text-danger-900',
-    },
-  };
-
-  return classMap[palette]?.[colorKey] ?? 'text-primary-500';
+const textMap: Record<string, string> = {
+  grayscale: 'text-grayscale-200',
+  primary: 'text-primary-100',
+  secondary: 'text-secondary-100',
+  danger: 'text-danger-100',
+  alert: 'text-alert-100',
+  success: 'text-success-100',
 };
 
-const isInternalLink = (props: LinkProps): props is InternalLinkProps => {
-  return typeof props.to === 'string';
-};
+const Link: FC<LinkProps> = ({ to, palette = 'grayscale', className, children, ...rest }) => {
+  const textColor = textMap[palette] ?? textMap.grayscale;
+  const staticClasses = clsx('font-display font-medium no-underline hover:underline', textColor);
 
-const Link: React.FC<LinkProps> = (props) => {
-  const { children, className, reverse, palette = 'primary' } = props;
-
-  const composedClass = clsx(baseClass, paletteClass(palette, reverse), className);
-
-  if (isInternalLink(props)) {
-    const { to, ...navLinkProps } = props;
-
+  if (to) {
     return (
       <NavLink
         to={to}
-        {...navLinkProps}
-        className={({ isActive }: NavLinkRenderProps) => clsx(composedClass, isActive && 'active')}
+        className={
+          typeof className === 'function'
+            ? (props) => clsx(staticClasses, className(props))
+            : clsx(staticClasses, className)
+        }
+        {...rest}
       >
         {children}
       </NavLink>
     );
   }
 
-  const { ...anchorProps } = props;
-
+  // 나머지 props는 a 전용으로 제한되었기 때문에 안전하게 사용 가능
   return (
-    <a {...anchorProps} className={composedClass}>
+    <a className={clsx(staticClasses, className)} {...rest}>
       {children}
     </a>
   );
